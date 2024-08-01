@@ -2,34 +2,37 @@
     The useTemporal hook is a custom React hook that leverages the Temporal API to provide the current date and time, automatically updating every second. This hook is useful for any React application that needs to display or work with the current date and time in a format provided by the Temporal API. 
 </div>
 
-### Features
-- Real-time Updates: The hook updates the current date and time every second.
-- Temporal API Integration: Utilizes the Temporal API for precise and reliable date and time handling.
-- Ease of Use: Simple to integrate and use in any React component.
-Install your newly created package:
 
-### Example Usage
-#### Here's an example of how to use the useTemporal hook in a React component:
+### Description for Hooks
 
+### ``useTemporal``
+<p>The <b>useTemporal</b> hook provides the current date and time using the Temporal API. It automatically updates the date and time every second, ensuring that the component using this hook always displays the most recent time.</p>
+
+#### Features:
+
+- __Real-time Updates:__ The hook updates the current date and time every second.
+- __Temporal API Integration:__ Utilizes the Temporal API for precise and reliable date and time handling.
+- __Ease of Use:__ Simple to integrate and use in any React component.
+
+#### Example Usage:
 
 ```jsx
 npm install temporal-react-hook
 ```
 
-Use the hook in a component:
 ```jsx
 import React from 'react';
-import { useTemporal } from 'temporal-react-hook';
+import { useTemporal } from 'your-package-name';
 
 const App: React.FC = () => {
-const now = useTemporal();
+  const now = useTemporal();
 
-return (
-<div>
-<h1>Current Date and Time</h1>
-<p>{now.toString()}</p>
-</div>
-);
+  return (
+    <div>
+      <h1>Current Date and Time</h1>
+      <p>{now.toString()}</p>
+    </div>
+  );
 };
 
 export default App;
@@ -44,3 +47,47 @@ export default App;
 - __Clock Display__: Displaying a real-time clock in your application.
 - __Time-based Events__: Triggering actions or displaying messages based on the current time.
 - __Logging and Monitoring__: Showing timestamps for logs or monitoring data in real-time applications.
+
+
+### ``useTimeZone``
+<p>The <b>useTimeZone</b> hook provides the current time zone and a function to convert a given date-time to a different time zone using the Temporal API.</p>
+
+#### Features:
+- __Current Time Zone:__ Provides the current time zone.
+- __Time Zone Conversion:__ Converts a given PlainDateTime to a specified time zone.
+
+### Example Usage
+
+```jsx
+npm install temporal-react-hook
+```
+
+```jsx
+import React from 'react';
+import { useTemporal, useTimeZone } from 'your-package-name';
+
+const App: React.FC = () => {
+    const now = useTemporal();
+    const { timeZone, convertToTimeZone } = useTimeZone();
+
+    const newYorkDateTime = convertToTimeZone(now, 'America/New_York');
+
+    return (
+        <div>
+            <h1>Current Date and Time</h1>
+            <p>{now.toString()}</p>
+            <h2>Time Zone</h2>
+            <p>{timeZone.toString()}</p>
+            <h2>New York Time</h2>
+            <p>{newYorkDateTime.toString()}</p>
+        </div>
+    );
+};
+
+export default App;
+```
+
+### Benefits
+- __Current Time Zone Information__  The hook provides easy access to the current time zone of the user's environment, allowing your application to adapt to the user's locale without additional configuration.
+- __Time Zone Conversion:__ The hook includes a built-in function to convert any given date-time to a specified target time zone, which simplifies handling global time zones in applications. This is particularly useful for applications that display events or schedules across different time zones.
+- __Simplifies Complex Logic:__  By abstracting the complexity of time zone handling, this hook makes it easier for developers to implement and maintain code that involves date-time manipulations across different time zones.

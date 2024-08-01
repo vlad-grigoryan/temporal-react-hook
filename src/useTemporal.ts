@@ -7,6 +7,7 @@ const useTemporal = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setNow(Temporal.Now.plainDateTimeISO());
+            Temporal.Now.plainDateTimeISO().day
         }, 1000);
 
         return () => clearInterval(intervalId);
