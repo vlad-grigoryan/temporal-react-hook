@@ -7,6 +7,7 @@ const useTemporal = () => {
     (0, react_1.useEffect)(() => {
         const intervalId = setInterval(() => {
             setNow(polyfill_1.Temporal.Now.plainDateTimeISO());
+            polyfill_1.Temporal.Now.plainDateTimeISO().day;
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);

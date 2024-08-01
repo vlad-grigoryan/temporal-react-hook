@@ -1,5 +1,6 @@
-<div align="center">
-    The useTemporal hook is a custom React hook that leverages the Temporal API to provide the current date and time, automatically updating every second. This hook is useful for any React application that needs to display or work with the current date and time in a format provided by the Temporal API. 
+<div>
+    <h1>temporal-react-hook</h1>
+    <h6>react-temporal-hooks is a React library that provides hooks for handling date and time operations using the Temporal API.</h6> 
 </div>
 
 
