@@ -3,26 +3,18 @@ import { Temporal } from '@js-temporal/polyfill';
 
 const useTimeZone = () => {
     const [timeZone, setTimeZone] = useState(
-        () => Temporal.Now.zonedDateTimeISO().getTimeZone()
+        () => Temporal.Now.zonedDateTimeISO().timeZoneId
     );
 
     useEffect(() => {
-        // Effect to set the initial time zone
-        setTimeZone(Temporal.Now.zonedDateTimeISO().getTimeZone());
+        setTimeZone(Temporal.Now.zonedDateTimeISO().timeZoneId);
     }, []);
 
     const convertToTimeZone = (dateTime: Temporal.PlainDateTime, targetTimeZone: string) => {
-        const targetZone = Temporal.TimeZone.from(targetTimeZone);
-        const zonedDateTime = Temporal.ZonedDateTime.from({
-            year : dateTime.year,
-            month: dateTime.month,
-            day: dateTime.day,
-            hour: dateTime.hour,
-            minute: dateTime.minute,
-            second: dateTime.second,
-            millisecond: dateTime.millisecond,
-            timeZone});
-        return zonedDateTime.withTimeZone(targetZone);
+        // Convert PlainDateTime in current zone to target zone (same instant)
+        const zoned = dateTime.toZonedDateTime(timeZone);
+        const instant = zoned.toInstant();
+        return instant.toZonedDateTimeISO(targetTimeZone);
     };
 
     return { timeZone, convertToTimeZone };

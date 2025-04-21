@@ -60,7 +60,7 @@ export default App;
 
 #### Features:
 - __Current Time Zone:__ Provides the current time zone.
-- __Time Zone Conversion:__ Converts a given PlainDateTime to a specified time zone.
+- __Time Zone Conversion:__ Converts a given PlainDateTime to a specified time zone, preserving the instant in time (not just the wall clock time).
 
 ### Example Usage
 
@@ -76,21 +76,16 @@ const App: React.FC = () => {
     const now = useTemporal();
     const { timeZone, convertToTimeZone } = useTimeZone();
 
+    // Convert to New York time, preserving the instant
     const newYorkDateTime = convertToTimeZone(now, 'America/New_York');
 
     return (
         <div>
-            <h1>Current Date and Time</h1>
-            <p>{now.toString()}</p>
-            <h2>Time Zone</h2>
-            <p>{timeZone.toString()}</p>
-            <h2>New York Time</h2>
-            <p>{newYorkDateTime.toString()}</p>
+            <div>Current time in your zone: {now.toString()}</div>
+            <div>Current time in New York: {newYorkDateTime.toString()}</div>
         </div>
     );
 };
-
-export default App;
 ```
 
 ### Benefits
@@ -154,3 +149,9 @@ export default App;
 - __Simplified Duration Management:__  Easily create and manage durations using the Temporal API.
 - __Duration Operations:__ Perform addition and subtraction operations with durations, enhancing date-time manipulation capabilities.
 - __Improved User Experience:__  Provides precise duration handling, which is essential for applications that involve scheduling, timers, and time calculations.
+
+---
+
+## Compatibility
+
+This library is compatible with @js-temporal/polyfill v0.5.x and above. If you are upgrading from an earlier version, please check the [Temporal polyfill changelog](https://github.com/js-temporal/temporal-polyfill/blob/main/CHANGELOG.md) for breaking changes and migration tips.
