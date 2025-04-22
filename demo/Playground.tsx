@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import useTemporal from "../src/useTemporal";
+import useCurrentDateTime from "../src/useCurrentDateTime";
 import useTimeZone from "../src/useTimeZone";
 import useDuration from "../src/useDuration";
+import useRelativeTime from "../src/useRelativeTime";
 
 const Playground: React.FC = () => {
-  // useTemporal: get the current time (PlainDateTime)
-  const now = useTemporal();
+  // useCurrentDateTime: get the current time (PlainDateTime)
+  const now = useCurrentDateTime();
   // useTimeZone: get current time zone and conversion util
   const { timeZone, convertToTimeZone } = useTimeZone();
   // useDuration: duration helpers
@@ -32,11 +33,15 @@ const Playground: React.FC = () => {
     converted = "Invalid time zone";
   }
 
+  // For relative time demo
+  const [demoRelativeBase, setDemoRelativeBase] = useState(() => now.subtract({ minutes: 3 }));
+  const relative = useRelativeTime(demoRelativeBase);
+
   return (
     <div style={{ fontFamily: "monospace", padding: 20, maxWidth: 700 }}>
       <h2>Temporal React Hook Playground</h2>
       <section style={{ marginBottom: 24 }}>
-        <h3>useTemporal</h3>
+        <h3>useCurrentDateTime</h3>
         <div>Current Date/Time: {now.toString()}</div>
       </section>
 
@@ -54,6 +59,19 @@ const Playground: React.FC = () => {
           <div>
             Converted: {typeof converted === "string" ? converted : converted.toString()}
           </div>
+        </div>
+      </section>
+
+      <section style={{ marginBottom: 24 }}>
+        <h3>useRelativeTime</h3>
+        <div>
+          <label>
+            Demo Base Time (3 min ago): {demoRelativeBase.toString()}
+            <br />
+            <button onClick={() => setDemoRelativeBase(now.subtract({ minutes: 3 }))}>Set 3 min ago</button>
+            <button onClick={() => setDemoRelativeBase(now.add({ minutes: 5 }))} style={{ marginLeft: 8 }}>Set 5 min in future</button>
+          </label>
+          <div>Relative: {relative}</div>
         </div>
       </section>
 

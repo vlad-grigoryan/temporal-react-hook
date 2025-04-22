@@ -4,15 +4,16 @@
 </div>
 
 ## Available hooks: 
-#### [useTemporal](#usetemporal-hook)
+#### [useCurrentDateTime](#usecurrentdatetime-hook)
 #### [useTimeZone](#usetimezone-hook)
 #### [useDuration](#useduration-hook)
+#### [useRelativeTime](#userelativetime-hook)
 
 
 ### Description for Hooks
 
-### `useTemporal hook`
-<p>The <b>useTemporal</b> hook provides the current date and time using the Temporal API. It automatically updates the date and time every second, ensuring that the component using this hook always displays the most recent time.</p>
+### `useCurrentDateTime hook`
+<p>The <b>useCurrentDateTime</b> hook provides the current date and time using the Temporal API. It automatically updates the date and time every second, ensuring that the component using this hook always displays the most recent time.</p>
 
 #### Features:
 
@@ -28,10 +29,10 @@ npm install temporal-react-hook
 
 ```jsx
 import React from 'react';
-import { useTemporal } from 'your-package-name';
+import { useCurrentDateTime } from 'your-package-name';
 
 const App: React.FC = () => {
-  const now = useTemporal();
+  const now = useCurrentDateTime();
 
   return (
     <div>
@@ -70,10 +71,10 @@ npm install temporal-react-hook
 
 ```jsx
 import React from 'react';
-import { useTemporal, useTimeZone } from 'your-package-name';
+import { useCurrentDateTime, useTimeZone } from 'your-package-name';
 
 const App: React.FC = () => {
-    const now = useTemporal();
+    const now = useCurrentDateTime();
     const { timeZone, convertToTimeZone } = useTimeZone();
 
     // Convert to New York time, preserving the instant
@@ -110,10 +111,10 @@ npm install temporal-react-hook
 
 ```jsx
 import React from 'react';
-import { useTemporal, useTimeZone, useDuration } from 'react-temporal-hooks';
+import { useCurrentDateTime, useTimeZone, useDuration } from 'react-temporal-hooks';
 
 const App: React.FC = () => {
-    const now = useTemporal();
+    const now = useCurrentDateTime();
     const { timeZone, convertToTimeZone } = useTimeZone();
     const { createDuration, addDuration, subtractDuration, formatDuration } = useDuration();
 
@@ -149,6 +150,20 @@ export default App;
 - __Simplified Duration Management:__  Easily create and manage durations using the Temporal API.
 - __Duration Operations:__ Perform addition and subtraction operations with durations, enhancing date-time manipulation capabilities.
 - __Improved User Experience:__  Provides precise duration handling, which is essential for applications that involve scheduling, timers, and time calculations.
+
+### `useRelativeTime hook`
+The `useRelativeTime` hook returns a human-friendly string representing how much time has passed since (or until) a given date/time.
+
+This hook is great for chat apps, notifications, activity feeds, or anywhere you want to show time in a user-friendly way!
+
+**Example Usage:**
+```tsx
+import { useRelativeTime } from 'your-package-name';
+
+const messageTime = Temporal.Now.plainDateTimeISO().subtract({ minutes: 3 });
+const relative = useRelativeTime(messageTime);
+// Output: "3 minutes ago"
+```
 
 ---
 
