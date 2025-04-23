@@ -3,6 +3,7 @@ import useCurrentDateTime from "../src/useCurrentDateTime";
 import useTimeZone from "../src/useTimeZone";
 import useDuration from "../src/useDuration";
 import useRelativeTime from "../src/useRelativeTime";
+import useLocaleDateTime from "../src/useLocaleDateTime";
 
 const Playground: React.FC = () => {
   // useCurrentDateTime: get the current time (PlainDateTime)
@@ -36,6 +37,26 @@ const Playground: React.FC = () => {
   // For relative time demo
   const [demoRelativeBase, setDemoRelativeBase] = useState(() => now.subtract({ minutes: 3 }));
   const relative = useRelativeTime(demoRelativeBase);
+
+  // useLocaleDateTime demo state
+  const [locale, setLocale] = useState('fr-FR');
+  const [dateStyle, setDateStyle] = useState<'full'|'long'|'medium'|'short'>('full');
+  const [timeStyle, setTimeStyle] = useState<'full'|'long'|'medium'|'short'>('short');
+
+  const formattedLocaleDateTime = useLocaleDateTime(
+    now,
+    locale,
+    { dateStyle, timeStyle }
+  );
+
+  // Predefined options for demonstration
+  const localeOptions = [
+    { label: 'French (fr-FR)', value: 'fr-FR' },
+    { label: 'US English (en-US)', value: 'en-US' },
+    { label: 'Japanese (ja-JP)', value: 'ja-JP' },
+    { label: 'German (de-DE)', value: 'de-DE' },
+  ];
+  const styleOptions = ['full', 'long', 'medium', 'short'] as const;
 
   return (
     <div style={{ fontFamily: "monospace", padding: 20, maxWidth: 700 }}>
@@ -84,6 +105,53 @@ const Playground: React.FC = () => {
         </div>
         <div style={{ marginTop: 8 }}>Now + Duration: {addedDateTime.toString()}</div>
         <div>Now - Duration: {subtractedDateTime.toString()}</div>
+      </section>
+
+      <section>
+        <h2>useLocaleDateTime Demo</h2>
+        <div style={{ marginBottom: 8 }}>
+          <label>Locale:
+            {localeOptions.map(opt => (
+              <button
+                key={opt.value}
+                style={{ marginLeft: 8, fontWeight: locale === opt.value ? 'bold' : 'normal' }}
+                onClick={() => setLocale(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </label>
+        </div>
+        <div style={{ marginBottom: 8 }}>
+          <label>Date Style:
+            {styleOptions.map(opt => (
+              <button
+                key={opt}
+                style={{ marginLeft: 8, fontWeight: dateStyle === opt ? 'bold' : 'normal' }}
+                onClick={() => setDateStyle(opt)}
+              >
+                {opt}
+              </button>
+            ))}
+          </label>
+        </div>
+        <div style={{ marginBottom: 8 }}>
+          <label>Time Style:
+            {styleOptions.map(opt => (
+              <button
+                key={opt}
+                style={{ marginLeft: 8, fontWeight: timeStyle === opt ? 'bold' : 'normal' }}
+                onClick={() => setTimeStyle(opt)}
+              >
+                {opt}
+              </button>
+            ))}
+          </label>
+        </div>
+        <p>
+          <b>Current date/time ({locale}, {dateStyle}/{timeStyle}):</b> <br />
+          <span>{formattedLocaleDateTime}</span>
+        </p>
       </section>
     </div>
   );

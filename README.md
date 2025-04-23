@@ -3,11 +3,14 @@
     <h6>react-temporal-hooks is a React library that provides hooks for handling date and time operations using the Temporal API.</h6> 
 </div>
 
+## 🖥️ [Live Demo](https://vlad-grigoryan.github.io/temporal-react-hook/)
+
 ## Available hooks: 
 #### [useCurrentDateTime](#usecurrentdatetime-hook)
 #### [useTimeZone](#usetimezone-hook)
 #### [useDuration](#useduration-hook)
 #### [useRelativeTime](#userelativetime-hook)
+#### [useLocaleDateTime](#uselocaledatetime-hook)
 
 
 ### Description for Hooks
@@ -164,6 +167,32 @@ const messageTime = Temporal.Now.plainDateTimeISO().subtract({ minutes: 3 });
 const relative = useRelativeTime(messageTime);
 // Output: "3 minutes ago"
 ```
+
+### `useLocaleDateTime hook`
+<p>The <b>useLocaleDateTime</b> hook formats a Temporal date/time object as a localized string using the browser's locale (or a provided locale) and Intl.DateTimeFormat options. It supports <code>Temporal.PlainDateTime</code>, <code>Temporal.ZonedDateTime</code>, and <code>Temporal.Instant</code>.</p>
+
+#### Features:
+- __Locale-aware formatting:__ Uses Intl.DateTimeFormat for robust, localized output.
+- __Flexible input:__ Accepts all major Temporal types.
+- __Customizable:__ Pass your own locale and formatting options.
+
+#### Example Usage:
+
+```tsx
+import { useLocaleDateTime } from 'temporal-react-hook';
+import { Temporal } from '@js-temporal/polyfill';
+
+const dateTime = Temporal.Now.plainDateTimeISO();
+const formatted = useLocaleDateTime(dateTime, 'fr-FR', { dateStyle: 'full', timeStyle: 'short' });
+// formatted: "mercredi 23 avril 2025 à 19:48"
+```
+
+#### Use Cases:
+- **Internationalized UIs:** Display dates and times in the user’s preferred language and format.
+- **Dashboards:** Show real-time or historical timestamps in a locale-appropriate way.
+- **Event Schedulers:** Present event times in the user’s local format for clarity.
+- **Reports and Exports:** Format Temporal values for PDF/CSV/Excel output in any locale.
+- **Accessibility:** Improve accessibility by respecting user locale and formatting conventions.
 
 ---
 
