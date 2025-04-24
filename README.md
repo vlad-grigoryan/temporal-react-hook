@@ -11,6 +11,7 @@
 #### [useDuration](#useduration-hook)
 #### [useRelativeTime](#userelativetime-hook)
 #### [useLocaleDateTime](#uselocaledatetime-hook)
+#### [useTimeAgo](#usetimeago-hook)
 
 
 ### Description for Hooks
@@ -193,6 +194,32 @@ const formatted = useLocaleDateTime(dateTime, 'fr-FR', { dateStyle: 'full', time
 - **Event Schedulers:** Present event times in the user’s local format for clarity.
 - **Reports and Exports:** Format Temporal values for PDF/CSV/Excel output in any locale.
 - **Accessibility:** Improve accessibility by respecting user locale and formatting conventions.
+
+### `useTimeAgo hook`
+<p>The <b>useTimeAgo</b> hook returns a live-updating, human-friendly string representing how long ago a Temporal date/time occurred (e.g., "just now", "5 minutes ago", "2 days ago"). It supports <code>Temporal.PlainDateTime</code>, <code>Temporal.ZonedDateTime</code>, and <code>Temporal.Instant</code>.</p>
+
+#### Features:
+- __Live updating:__ The string updates automatically as time passes.
+- __Flexible input:__ Accepts all major Temporal types.
+- __Customizable interval:__ Choose how often the string updates.
+
+#### Example Usage:
+
+```tsx
+import { useTimeAgo } from 'temporal-react-hook';
+import { Temporal } from '@js-temporal/polyfill';
+
+const dateTime = Temporal.Now.plainDateTimeISO().subtract({ hours: 2 });
+const timeAgo = useTimeAgo(dateTime);
+// timeAgo: "2 hours ago"
+```
+
+#### Use Cases:
+- **Activity feeds:** Show when posts, comments, or messages were created ("5 minutes ago").
+- **Notifications:** Display how recently something happened ("just now", "yesterday").
+- **Audit logs:** Human-readable timestamps for events.
+- **Real-time dashboards:** Auto-updating event recency.
+- **Chat apps:** Indicate when a message was sent.
 
 ---
 

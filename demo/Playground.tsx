@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { Temporal } from "@js-temporal/polyfill";
 import useCurrentDateTime from "../src/useCurrentDateTime";
 import useTimeZone from "../src/useTimeZone";
 import useDuration from "../src/useDuration";
 import useRelativeTime from "../src/useRelativeTime";
 import useLocaleDateTime from "../src/useLocaleDateTime";
+import useTimeAgo from "../src/useTimeAgo";
 
 const Playground: React.FC = () => {
   // useCurrentDateTime: get the current time (PlainDateTime)
@@ -49,6 +51,25 @@ const Playground: React.FC = () => {
     { dateStyle, timeStyle }
   );
 
+  // useTimeAgo demo state
+  const [agoDateTime, setAgoDateTime] = useState(() => {
+    // Default: 5 minutes ago
+    return Temporal.PlainDateTime.from(now.toString()).subtract({ minutes: 5 });
+  });
+  const agoString = useTimeAgo(agoDateTime);
+
+  // For quick selection
+  const makePlainDateTime = (base: typeof now, diff: { minutes?: number; hours?: number; days?: number }) => {
+    return Temporal.PlainDateTime.from(base.toString()).subtract(diff);
+  };
+  const agoOptions = [
+    { label: "5 minutes ago", value: makePlainDateTime(now, { minutes: 5 }) },
+    { label: "2 hours ago", value: makePlainDateTime(now, { hours: 2 }) },
+    { label: "Yesterday", value: makePlainDateTime(now, { days: 1 }) },
+    { label: "6 days ago", value: makePlainDateTime(now, { days: 6 }) },
+    { label: "Just now", value: Temporal.PlainDateTime.from(now.toString()) },
+  ];
+
   // Predefined options for demonstration
   const localeOptions = [
     { label: 'French (fr-FR)', value: 'fr-FR' },
@@ -65,6 +86,8 @@ const Playground: React.FC = () => {
         <h3>useCurrentDateTime</h3>
         <div>Current Date/Time: {now.toString()}</div>
       </section>
+
+      <hr style={{ margin: '32px 0' }} />
 
       <section style={{ marginBottom: 24 }}>
         <h3>useTimeZone</h3>
@@ -83,6 +106,8 @@ const Playground: React.FC = () => {
         </div>
       </section>
 
+      <hr style={{ margin: '32px 0' }} />
+
       <section style={{ marginBottom: 24 }}>
         <h3>useRelativeTime</h3>
         <div>
@@ -96,6 +121,8 @@ const Playground: React.FC = () => {
         </div>
       </section>
 
+      <hr style={{ margin: '32px 0' }} />
+
       <section>
         <h3>useDuration</h3>
         <div>Duration: {formatDuration(duration)}</div>
@@ -107,8 +134,35 @@ const Playground: React.FC = () => {
         <div>Now - Duration: {subtractedDateTime.toString()}</div>
       </section>
 
+      <hr style={{ margin: '32px 0' }} />
+
       <section>
-        <h2>useLocaleDateTime Demo</h2>
+        <h3>useTimeAgo</h3>
+        <div style={{ marginBottom: 8 }}>
+          <label>Pick a time:
+            {agoOptions.map(opt => (
+              <button
+                key={opt.label}
+                style={{ marginLeft: 8, fontWeight: agoDateTime.equals(opt.value) ? 'bold' : 'normal' }}
+                onClick={() => setAgoDateTime(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </label>
+        </div>
+        <p>
+          <b>Selected time:</b> {agoDateTime.toString()}
+        </p>
+        <p>
+          <b>Time ago:</b> {agoString}
+        </p>
+      </section>
+
+      <hr style={{ margin: '32px 0' }} />
+
+      <section>
+        <h3>useLocaleDateTime</h3>
         <div style={{ marginBottom: 8 }}>
           <label>Locale:
             {localeOptions.map(opt => (
