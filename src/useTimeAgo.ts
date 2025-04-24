@@ -45,18 +45,17 @@ function getInstant(input: TemporalInput): Temporal.Instant {
 }
 
 function getTimeAgoString(from: Temporal.Instant, to: Temporal.Instant): string {
-  // Use 'largestUnit: "hours"' to avoid TS error ("day" not assignable)
-  const duration = from.until(to, { largestUnit: "hours" });
-  const seconds = duration.total({ unit: "seconds" });
+  const seconds = (to.epochMilliseconds - from.epochMilliseconds) / 1000;
   const absSeconds = Math.abs(seconds);
-  const absMinutes = Math.abs(duration.total({ unit: "minutes" }));
-  const absHours = Math.abs(duration.total({ unit: "hours" }));
-  // For days, use Math.floor(absHours / 24)
-  const absDays = Math.floor(absHours / 24);
+  const absMinutes = Math.abs(seconds / 60);
+  const absHours = Math.abs(seconds / 3600);
+  const absDays = Math.abs(seconds / 86400);
 
   if (absSeconds < 45) return "just now";
   if (absMinutes < 2) return `${Math.round(absMinutes)} minute${Math.round(absMinutes) !== 1 ? 's' : ''} ago`;
+  if (absMinutes < 60) return `${Math.round(absMinutes)} minutes ago`;
   if (absHours < 2) return `${Math.round(absHours)} hour${Math.round(absHours) !== 1 ? 's' : ''} ago`;
+  if (absHours < 24) return `${Math.round(absHours)} hours ago`;
   if (absDays < 2) return `${Math.round(absDays)} day${Math.round(absDays) !== 1 ? 's' : ''} ago`;
   if (absDays < 7) return `${Math.round(absDays)} days ago`;
   // Fallback: show ISO date
