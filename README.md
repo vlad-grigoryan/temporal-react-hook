@@ -12,6 +12,10 @@
 #### [useRelativeTime](#userelativetime-hook)
 #### [useLocaleDateTime](#uselocaledatetime-hook)
 #### [useTimeAgo](#usetimeago-hook)
+#### [useIsToday](#useistoday-hook)
+#### [useIsThisWeek](#useisthisweek-hook)
+#### [useIsThisMonth](#useisthismonth-hook)
+#### [useIsThisYear](#useisthisyear-hook)
 
 
 ### Description for Hooks
@@ -220,6 +224,49 @@ const timeAgo = useTimeAgo(dateTime);
 - **Audit logs:** Human-readable timestamps for events.
 - **Real-time dashboards:** Auto-updating event recency.
 - **Chat apps:** Indicate when a message was sent.
+
+---
+
+## 🆕 New Date Range Hooks
+
+### `useIsToday(date: Temporal.PlainDateTime): boolean`
+Returns `true` if the provided date is today.
+
+### `useIsThisWeek(date: Temporal.PlainDateTime): boolean`
+Returns `true` if the provided date is within the current week (ISO week).
+
+### `useIsThisMonth(date: Temporal.PlainDateTime): boolean`
+Returns `true` if the provided date is within the current month.
+
+### `useIsThisYear(date: Temporal.PlainDateTime): boolean`
+Returns `true` if the provided date is within the current year.
+
+#### Example Usage
+```jsx
+import { useIsToday, useIsThisWeek, useIsThisMonth, useIsThisYear } from 'your-package-name';
+import { Temporal } from '@js-temporal/polyfill';
+
+const date = Temporal.Now.plainDateTimeISO();
+
+const isToday = useIsToday(date);
+const isThisWeek = useIsThisWeek(date);
+const isThisMonth = useIsThisMonth(date);
+const isThisYear = useIsThisYear(date);
+
+return (
+  <div>
+    <div>Is Today? {String(isToday)}</div>
+    <div>Is This Week? {String(isThisWeek)}</div>
+    <div>Is This Month? {String(isThisMonth)}</div>
+    <div>Is This Year? {String(isThisYear)}</div>
+  </div>
+);
+```
+
+#### Use Cases
+- Highlighting events or items that are today/this week/this month/this year
+- Filtering data by date ranges
+- Smart date grouping in UIs
 
 ---
 

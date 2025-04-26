@@ -4,3 +4,7 @@ export { default as useDuration } from './useDuration';
 export { default as useRelativeTime } from './useRelativeTime';
 export { default as useLocaleDateTime } from './useLocaleDateTime';
 export { default as useTimeAgo } from './useTimeAgo';
+export { default as useIsToday } from './useIsToday';
+export { default as useIsThisWeek } from './useIsThisWeek';
+export { default as useIsThisMonth } from './useIsThisMonth';
+export { default as useIsThisYear } from './useIsThisYear';

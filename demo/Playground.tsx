@@ -6,6 +6,10 @@ import useDuration from "../src/useDuration";
 import useRelativeTime from "../src/useRelativeTime";
 import useLocaleDateTime from "../src/useLocaleDateTime";
 import useTimeAgo from "../src/useTimeAgo";
+import useIsToday from "../src/useIsToday";
+import useIsThisWeek from "../src/useIsThisWeek";
+import useIsThisMonth from "../src/useIsThisMonth";
+import useIsThisYear from "../src/useIsThisYear";
 
 const Playground: React.FC = () => {
   // useCurrentDateTime: get the current time (PlainDateTime)
@@ -207,6 +211,43 @@ const Playground: React.FC = () => {
           <span>{formattedLocaleDateTime}</span>
         </p>
       </section>
+
+      <hr style={{ margin: '32px 0' }} />
+
+      <section>
+        <h3>Date Range Hooks</h3>
+        <div>
+          <b>Now:</b> {now.toString()}
+        </div>
+        <div style={{ marginTop: 8 }}>
+          <b>Is Today?</b> {String(useIsToday(now))}
+        </div>
+        <div style={{ marginTop: 8 }}>
+          <b>Is This Week?</b> {String(useIsThisWeek(now))}
+        </div>
+        <div style={{ marginTop: 8 }}>
+          <b>Is This Month?</b> {String(useIsThisMonth(now))}
+        </div>
+        <div style={{ marginTop: 8 }}>
+          <b>Is This Year?</b> {String(useIsThisYear(now))}
+        </div>
+        <div style={{ marginTop: 16 }}>
+          <b>Pick a date to test:</b>
+          <button style={{ marginLeft: 8 }} onClick={() => setDemoRelativeBase(now.subtract({ days: 1 }))}>Yesterday</button>
+          <button style={{ marginLeft: 8 }} onClick={() => setDemoRelativeBase(now.subtract({ weeks: 1 }))}>Last Week</button>
+          <button style={{ marginLeft: 8 }} onClick={() => setDemoRelativeBase(now.subtract({ months: 1 }))}>Last Month</button>
+          <button style={{ marginLeft: 8 }} onClick={() => setDemoRelativeBase(now.subtract({ years: 1 }))}>Last Year</button>
+        </div>
+        <div style={{ marginTop: 8 }}>
+          <b>Selected:</b> {demoRelativeBase.toString()}<br />
+          <b>Is Today?</b> {String(useIsToday(demoRelativeBase))}<br />
+          <b>Is This Week?</b> {String(useIsThisWeek(demoRelativeBase))}<br />
+          <b>Is This Month?</b> {String(useIsThisMonth(demoRelativeBase))}<br />
+          <b>Is This Year?</b> {String(useIsThisYear(demoRelativeBase))}
+        </div>
+      </section>
+
+      <hr style={{ margin: '32px 0' }} />
     </div>
   );
 };
