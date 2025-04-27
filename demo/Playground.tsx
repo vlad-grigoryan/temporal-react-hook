@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 import useCurrentDateTime from "../src/useCurrentDateTime";
 import useTimeZone from "../src/useTimeZone";
@@ -10,6 +10,8 @@ import useIsToday from "../src/useIsToday";
 import useIsThisWeek from "../src/useIsThisWeek";
 import useIsThisMonth from "../src/useIsThisMonth";
 import useIsThisYear from "../src/useIsThisYear";
+import useTemporalAdd from "../src/useTemporalAdd";
+import useTemporalSubtract from "../src/useTemporalSubtract";
 
 const Playground: React.FC = () => {
   // useCurrentDateTime: get the current time (PlainDateTime)
@@ -26,7 +28,7 @@ const Playground: React.FC = () => {
   const [subtractedDateTime, setSubtractedDateTime] = useState(() => subtractDuration(now, duration));
 
   // Update added/subtracted when now or duration changes
-  React.useEffect(() => {
+  useEffect(() => {
     setAddedDateTime(addDuration(now, duration));
     setSubtractedDateTime(subtractDuration(now, duration));
   }, [now, duration]);
@@ -82,6 +84,25 @@ const Playground: React.FC = () => {
     { label: 'German (de-DE)', value: 'de-DE' },
   ];
   const styleOptions = ['full', 'long', 'medium', 'short'] as const;
+
+  // useTemporalAdd/Subtract demo state
+  const add = useTemporalAdd();
+  const subtract = useTemporalSubtract();
+  const [baseDate, setBaseDate] = useState(() => Temporal.PlainDateTime.from(now.toString()));
+  const [amount, setAmount] = useState<Partial<Temporal.DurationLike>>({ days: 1 });
+  const [resultAdd, setResultAdd] = useState(() => add(baseDate, amount));
+  const [resultSubtract, setResultSubtract] = useState(() => subtract(baseDate, amount));
+
+  useEffect(() => {
+    setResultAdd(add(baseDate, amount));
+    setResultSubtract(subtract(baseDate, amount));
+  }, [baseDate, amount, add, subtract]);
+
+  // Simple input controls for demo
+  const handleAmountChange = (unit: keyof Temporal.DurationLike, value: number) => {
+    if (value < 0 || isNaN(value)) return; // Prevent negative or invalid values
+    setAmount(prev => ({ ...prev, [unit]: value }));
+  };
 
   return (
     <div style={{ fontFamily: "monospace", padding: 20, maxWidth: 700 }}>
@@ -210,6 +231,42 @@ const Playground: React.FC = () => {
           <b>Current date/time ({locale}, {dateStyle}/{timeStyle}):</b> <br />
           <span>{formattedLocaleDateTime}</span>
         </p>
+      </section>
+
+      <hr style={{ margin: '32px 0' }} />
+
+      <section>
+        <h3>useTemporalAdd / useTemporalSubtract</h3>
+        <div style={{ marginBottom: 16, marginTop: 16 }}>
+          <b>Base Date:</b> {baseDate.toString()}
+        </div>
+        <div style={{ marginBottom: 16, marginTop: 16 }}>
+          <b>Amount to Add/Subtract:</b>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 24px', marginTop: 8, marginBottom: 8, justifyContent: 'center', alignItems: 'center' }}>
+            {["seconds","minutes","hours","days","weeks","months","years"].map(unit => (
+              <span key={unit}>
+                <label>
+                  {unit}: <input
+                    type="number"
+                    min={0}
+                    value={amount[unit as keyof Temporal.DurationLike] ?? ""}
+                    onChange={e => handleAmountChange(unit as keyof Temporal.DurationLike, Number(e.target.value))}
+                    style={{ width: 50, marginLeft: 4, marginRight: 4 }}
+                  />
+                </label>
+              </span>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginBottom: 16, marginTop: 16 }}>
+          <button onClick={() => setBaseDate(Temporal.PlainDateTime.from(now.toString()))}>Reset Base Date to Now</button>
+        </div>
+        <div>
+          <b>Result (Add):</b> {resultAdd.toString()}
+        </div>
+        <div>
+          <b>Result (Subtract):</b> {resultSubtract.toString()}
+        </div>
       </section>
 
       <hr style={{ margin: '32px 0' }} />

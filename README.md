@@ -16,6 +16,8 @@
 #### [useIsThisWeek](#useisthisweek-hook)
 #### [useIsThisMonth](#useisthismonth-hook)
 #### [useIsThisYear](#useisthisyear-hook)
+#### [useTemporalAdd](#usetemporaladd-hook)
+#### [useTemporalSubtract](#usetemporalsubtract-hook)
 
 
 ### Description for Hooks
@@ -263,10 +265,78 @@ return (
 );
 ```
 
-#### Use Cases
+#### Use Cases:
 - Highlighting events or items that are today/this week/this month/this year
 - Filtering data by date ranges
 - Smart date grouping in UIs
+
+---
+
+## `useTemporalAdd` Hook
+
+Adds a specified amount of seconds, minutes, hours, days, weeks, months, or years to a `Temporal.PlainDateTime`.
+
+**Signature:**
+```ts
+const add = useTemporalAdd();
+const result = add(date, { days: 1, hours: 2 });
+```
+
+**Parameters:**
+- `date`: `Temporal.PlainDateTime` — The base date/time.
+- `amount`: `Partial<Temporal.DurationLike>` — Object with any combination of `seconds`, `minutes`, `hours`, `days`, `weeks`, `months`, `years`.
+
+**Returns:**
+- `Temporal.PlainDateTime` — The new date/time after addition.
+
+**Example:**
+```tsx
+import { useTemporalAdd } from 'temporal-react-hook';
+import { Temporal } from '@js-temporal/polyfill';
+
+const add = useTemporalAdd();
+const base = Temporal.PlainDateTime.from('2025-04-27T12:00');
+const next = add(base, { days: 2, hours: 3 });
+// next.toString() === '2025-04-29T15:00:00'
+```
+
+---
+
+## `useTemporalSubtract` Hook
+
+Subtracts a specified amount of seconds, minutes, hours, days, weeks, months, or years from a `Temporal.PlainDateTime`.
+
+**Signature:**
+```ts
+const subtract = useTemporalSubtract();
+const result = subtract(date, { months: 1 });
+```
+
+**Parameters:**
+- `date`: `Temporal.PlainDateTime` — The base date/time.
+- `amount`: `Partial<Temporal.DurationLike>` — Object with any combination of `seconds`, `minutes`, `hours`, `days`, `weeks`, `months`, `years`.
+
+**Returns:**
+- `Temporal.PlainDateTime` — The new date/time after subtraction.
+
+**Example:**
+```tsx
+import { useTemporalSubtract } from 'temporal-react-hook';
+import { Temporal } from '@js-temporal/polyfill';
+
+const subtract = useTemporalSubtract();
+const base = Temporal.PlainDateTime.from('2025-04-27T12:00');
+const prev = subtract(base, { months: 1, days: 5 });
+// prev.toString() === '2025-03-22T12:00:00'
+```
+
+---
+
+**Use Cases:**
+- Scheduling or rescheduling events
+- Calculating deadlines or reminders
+- Time-based navigation (e.g., previous/next week)
+- Building custom date pickers or timeline controls
 
 ---
 
