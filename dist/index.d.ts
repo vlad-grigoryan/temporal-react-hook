@@ -10,3 +10,4 @@ export { default as useIsThisMonth } from './useIsThisMonth';
 export { default as useIsThisYear } from './useIsThisYear';
 export { default as useTemporalAdd } from './useTemporalAdd';
 export { default as useTemporalSubtract } from './useTemporalSubtract';
+export { default as useTemporalFormat } from './useTemporalFormat';

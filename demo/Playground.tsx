@@ -12,6 +12,7 @@ import useIsThisMonth from "../src/useIsThisMonth";
 import useIsThisYear from "../src/useIsThisYear";
 import useTemporalAdd from "../src/useTemporalAdd";
 import useTemporalSubtract from "../src/useTemporalSubtract";
+import useTemporalFormat from "../src/useTemporalFormat";
 
 const Playground: React.FC = () => {
   // useCurrentDateTime: get the current time (PlainDateTime)
@@ -97,6 +98,20 @@ const Playground: React.FC = () => {
     setResultAdd(add(baseDate, amount));
     setResultSubtract(subtract(baseDate, amount));
   }, [baseDate, amount, add, subtract]);
+
+  // useTemporalFormat demo state
+  const [formatDate, setFormatDate] = useState(() => Temporal.Now.plainDateTimeISO());
+  const [formatPreset, setFormatPreset] = useState<'short' | 'medium' | 'long' | 'full'>('medium');
+  const [formatLocale, setFormatLocale] = useState<string>('en-US');
+  const formatted = useTemporalFormat(formatDate, formatPreset, formatLocale);
+
+  const presetOptions = ['short', 'medium', 'long', 'full'] as const;
+  const localeOptionsFmt = [
+    { label: 'English (US)', value: 'en-US' },
+    { label: 'French', value: 'fr-FR' },
+    { label: 'Russian', value: 'ru-RU' },
+    { label: 'Japanese', value: 'ja-JP' },
+  ];
 
   // Simple input controls for demo
   const handleAmountChange = (unit: keyof Temporal.DurationLike, value: number) => {
@@ -266,6 +281,45 @@ const Playground: React.FC = () => {
         </div>
         <div>
           <b>Result (Subtract):</b> {resultSubtract.toString()}
+        </div>
+      </section>
+
+      <hr style={{ margin: '32px 0' }} />
+
+      <section>
+        <h3>useTemporalFormat</h3>
+        <div style={{ marginBottom: 8 }}>
+          <b>Date to Format:</b> {formatDate.toString()}
+          <button style={{ marginLeft: 8 }} onClick={() => setFormatDate(Temporal.Now.plainDateTimeISO())}>Now</button>
+          <button style={{ marginLeft: 8 }} onClick={() => setFormatDate(formatDate.add({ days: 1 }))}>+1 day</button>
+          <button style={{ marginLeft: 8 }} onClick={() => setFormatDate(formatDate.subtract({ days: 1 }))}>-1 day</button>
+        </div>
+        <div style={{ marginBottom: 8 }}>
+          <b>Preset:</b>
+          {presetOptions.map(opt => (
+            <button
+              key={opt}
+              style={{ marginLeft: 8, fontWeight: formatPreset === opt ? 'bold' : 'normal' }}
+              onClick={() => setFormatPreset(opt)}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+        <div style={{ marginBottom: 8 }}>
+          <b>Locale:</b>
+          {localeOptionsFmt.map(opt => (
+            <button
+              key={opt.value}
+              style={{ marginLeft: 8, fontWeight: formatLocale === opt.value ? 'bold' : 'normal' }}
+              onClick={() => setFormatLocale(opt.value)}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+        <div>
+          <b>Formatted:</b> {formatted}
         </div>
       </section>
 

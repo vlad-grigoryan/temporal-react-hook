@@ -18,6 +18,7 @@
 #### [useIsThisYear](#useisthisyear-hook)
 #### [useTemporalAdd](#usetemporaladd-hook)
 #### [useTemporalSubtract](#usetemporalsubtract-hook)
+#### [useTemporalFormat](#usetemporalformat-hook)
 
 
 ### Description for Hooks
@@ -329,6 +330,46 @@ const base = Temporal.PlainDateTime.from('2025-04-27T12:00');
 const prev = subtract(base, { months: 1, days: 5 });
 // prev.toString() === '2025-03-22T12:00:00'
 ```
+
+---
+
+## `useTemporalFormat` Hook
+
+Formats Temporal objects (`PlainDate`, `PlainDateTime`, `ZonedDateTime`, `Instant`) into a localized string using Intl.DateTimeFormat options or a preset.
+
+**Signature:**
+```ts
+const formatted = useTemporalFormat(date, options?, locale?)
+```
+
+**Parameters:**
+- `date`: Temporal object to format (required)
+- `options`: Intl.DateTimeFormat options or preset string (`'short'`, `'medium'`, `'long'`, `'full'`)
+- `locale`: Optional locale string (default: system locale)
+
+**Returns:**
+- `string` — The formatted date/time string
+
+**Example Usage:**
+```tsx
+import { useTemporalFormat } from 'temporal-react-hook';
+import { Temporal } from '@js-temporal/polyfill';
+
+const date = Temporal.Now.plainDateTimeISO();
+const formatted = useTemporalFormat(date, 'long', 'fr-FR');
+// e.g., '28 avril 2025 à 00:36:00'
+```
+
+**Presets:**
+- `'short'`: Short date and time
+- `'medium'`: Medium date and time
+- `'long'`: Long date and time
+- `'full'`: Full date and time
+
+**Use Cases:**
+- Displaying dates/times in user-friendly formats
+- Supporting multiple locales in your UI
+- Showing event times, logs, or timestamps in various styles
 
 ---
 
