@@ -1,365 +1,161 @@
-import React, { useState, useEffect } from "react";
-import { Temporal } from "@js-temporal/polyfill";
-import useCurrentDateTime from "../src/useCurrentDateTime";
-import useTimeZone from "../src/useTimeZone";
-import useDuration from "../src/useDuration";
-import useRelativeTime from "../src/useRelativeTime";
-import useLocaleDateTime from "../src/useLocaleDateTime";
-import useTimeAgo from "../src/useTimeAgo";
-import useIsToday from "../src/useIsToday";
-import useIsThisWeek from "../src/useIsThisWeek";
-import useIsThisMonth from "../src/useIsThisMonth";
-import useIsThisYear from "../src/useIsThisYear";
-import useTemporalAdd from "../src/useTemporalAdd";
-import useTemporalSubtract from "../src/useTemporalSubtract";
-import useTemporalFormat from "../src/useTemporalFormat";
+import { useState, FC, useRef, useEffect } from "react";
+import DemoUseCurrentDateTime from "./components/DemoUseCurrentDateTime";
+import DemoUseTimeZone from "./components/DemoUseTimeZone";
+import DemoUseDuration from "./components/DemoUseDuration";
+import DemoUseRelativeTime from "./components/DemoUseRelativeTime";
+import DemoUseLocaleDateTime from "./components/DemoUseLocaleDateTime";
+import DemoUseTimeAgo from "./components/DemoUseTimeAgo";
+import DemoUseIsToday from "./components/DemoUseIsToday";
+import DemoUseIsThisWeek from "./components/DemoUseIsThisWeek";
+import DemoUseIsThisMonth from "./components/DemoUseIsThisMonth";
+import DemoUseIsThisYear from "./components/DemoUseIsThisYear";
+import DemoUseTemporalFormat from "./components/DemoUseTemporalFormat";
+import DemoUseTemporalAdd from "./components/DemoUseTemporalAdd";
+import DemoUseTemporalSubtract from "./components/DemoUseTemporalSubtract";
+import DemoUseTemporalStartEndOf from "./components/DemoUseTemporalStartEndOf";
 
-const Playground: React.FC = () => {
-  // useCurrentDateTime: get the current time (PlainDateTime)
-  const now = useCurrentDateTime();
-  // useTimeZone: get current time zone and conversion util
-  const { timeZone, convertToTimeZone } = useTimeZone();
-  // useDuration: duration helpers
-  const { createDuration, addDuration, subtractDuration, formatDuration } = useDuration();
+const demoSections = [
+  { key: "currentdatetime", label: "useCurrentDateTime", component: <DemoUseCurrentDateTime /> },
+  { key: "timezone", label: "useTimeZone", component: <DemoUseTimeZone /> },
+  { key: "duration", label: "useDuration", component: <DemoUseDuration /> },
+  { key: "relativetime", label: "useRelativeTime", component: <DemoUseRelativeTime /> },
+  { key: "localedatetime", label: "useLocaleDateTime", component: <DemoUseLocaleDateTime /> },
+  { key: "timeago", label: "useTimeAgo", component: <DemoUseTimeAgo /> },
+  { key: "istoday", label: "useIsToday", component: <DemoUseIsToday /> },
+  { key: "isthisweek", label: "useIsThisWeek", component: <DemoUseIsThisWeek /> },
+  { key: "isthismonth", label: "useIsThisMonth", component: <DemoUseIsThisMonth /> },
+  { key: "isthisyear", label: "useIsThisYear", component: <DemoUseIsThisYear /> },
+  { key: "format", label: "useTemporalFormat", component: <DemoUseTemporalFormat /> },
+  { key: "add", label: "useTemporalAdd", component: <DemoUseTemporalAdd /> },
+  { key: "subtract", label: "useTemporalSubtract", component: <DemoUseTemporalSubtract /> },
+  { key: "startendof", label: "useTemporalStartOf / EndOf", component: <DemoUseTemporalStartEndOf /> },
+];
 
-  // Demo: create a duration
-  const [duration, setDuration] = useState(() => createDuration({ hours: 1, minutes: 30 }));
-  // Demo: add/subtract duration to now
-  const [addedDateTime, setAddedDateTime] = useState(() => addDuration(now, duration));
-  const [subtractedDateTime, setSubtractedDateTime] = useState(() => subtractDuration(now, duration));
-
-  // Update added/subtracted when now or duration changes
-  useEffect(() => {
-    setAddedDateTime(addDuration(now, duration));
-    setSubtractedDateTime(subtractDuration(now, duration));
-  }, [now, duration]);
-
-  // For time zone conversion
-  const [targetZone, setTargetZone] = useState("America/New_York");
-  let converted;
-  try {
-    converted = convertToTimeZone(now, targetZone);
-  } catch {
-    converted = "Invalid time zone";
-  }
-
-  // For relative time demo
-  const [demoRelativeBase, setDemoRelativeBase] = useState(() => now.subtract({ minutes: 3 }));
-  const relative = useRelativeTime(demoRelativeBase);
-
-  // useLocaleDateTime demo state
-  const [locale, setLocale] = useState('fr-FR');
-  const [dateStyle, setDateStyle] = useState<'full'|'long'|'medium'|'short'>('full');
-  const [timeStyle, setTimeStyle] = useState<'full'|'long'|'medium'|'short'>('short');
-
-  const formattedLocaleDateTime = useLocaleDateTime(
-    now,
-    locale,
-    { dateStyle, timeStyle }
-  );
-
-  // useTimeAgo demo state
-  const [agoDateTime, setAgoDateTime] = useState(() => {
-    // Default: 5 minutes ago
-    return Temporal.PlainDateTime.from(now.toString()).subtract({ minutes: 5 });
-  });
-  const agoString = useTimeAgo(agoDateTime);
-
-  // For quick selection
-  const makePlainDateTime = (base: typeof now, diff: { minutes?: number; hours?: number; days?: number }) => {
-    return Temporal.PlainDateTime.from(base.toString()).subtract(diff);
-  };
-  const agoOptions = [
-    { label: "5 minutes ago", value: makePlainDateTime(now, { minutes: 5 }) },
-    { label: "2 hours ago", value: makePlainDateTime(now, { hours: 2 }) },
-    { label: "Yesterday", value: makePlainDateTime(now, { days: 1 }) },
-    { label: "6 days ago", value: makePlainDateTime(now, { days: 6 }) },
-    { label: "Just now", value: Temporal.PlainDateTime.from(now.toString()) },
-  ];
-
-  // Predefined options for demonstration
-  const localeOptions = [
-    { label: 'French (fr-FR)', value: 'fr-FR' },
-    { label: 'US English (en-US)', value: 'en-US' },
-    { label: 'Japanese (ja-JP)', value: 'ja-JP' },
-    { label: 'German (de-DE)', value: 'de-DE' },
-  ];
-  const styleOptions = ['full', 'long', 'medium', 'short'] as const;
-
-  // useTemporalAdd/Subtract demo state
-  const add = useTemporalAdd();
-  const subtract = useTemporalSubtract();
-  const [baseDate, setBaseDate] = useState(() => Temporal.PlainDateTime.from(now.toString()));
-  const [amount, setAmount] = useState<Partial<Temporal.DurationLike>>({ days: 1 });
-  const [resultAdd, setResultAdd] = useState(() => add(baseDate, amount));
-  const [resultSubtract, setResultSubtract] = useState(() => subtract(baseDate, amount));
+const Playground: FC = () => {
+  const [selected, setSelected] = useState(demoSections[0].key);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const navRef = useRef<HTMLDivElement>(null);
+  const [showUpArrow, setShowUpArrow] = useState(false);
+  const [showDownArrow, setShowDownArrow] = useState(false);
 
   useEffect(() => {
-    setResultAdd(add(baseDate, amount));
-    setResultSubtract(subtract(baseDate, amount));
-  }, [baseDate, amount, add, subtract]);
-
-  // useTemporalFormat demo state
-  const [formatDate, setFormatDate] = useState(() => Temporal.Now.plainDateTimeISO());
-  const [formatPreset, setFormatPreset] = useState<'short' | 'medium' | 'long' | 'full'>('medium');
-  const [formatLocale, setFormatLocale] = useState<string>('en-US');
-  const formatted = useTemporalFormat(formatDate, formatPreset, formatLocale);
-
-  const presetOptions = ['short', 'medium', 'long', 'full'] as const;
-  const localeOptionsFmt = [
-    { label: 'English (US)', value: 'en-US' },
-    { label: 'French', value: 'fr-FR' },
-    { label: 'Russian', value: 'ru-RU' },
-    { label: 'Japanese', value: 'ja-JP' },
-  ];
-
-  // Simple input controls for demo
-  const handleAmountChange = (unit: keyof Temporal.DurationLike, value: number) => {
-    if (value < 0 || isNaN(value)) return; // Prevent negative or invalid values
-    setAmount(prev => ({ ...prev, [unit]: value }));
-  };
+    const nav = navRef.current;
+    if (!nav) return;
+    const updateArrows = () => {
+      setShowUpArrow(nav.scrollTop > 0);
+      setShowDownArrow(nav.scrollTop + nav.clientHeight < nav.scrollHeight);
+    };
+    updateArrows();
+    nav.addEventListener('scroll', updateArrows);
+    window.addEventListener('resize', updateArrows);
+    return () => {
+      nav.removeEventListener('scroll', updateArrows);
+      window.removeEventListener('resize', updateArrows);
+    };
+  }, []);
 
   return (
-    <div style={{ fontFamily: "monospace", padding: 20, maxWidth: 700 }}>
-      <h2>Temporal React Hook Playground</h2>
-      <section style={{ marginBottom: 24 }}>
-        <h3>useCurrentDateTime</h3>
-        <div>Current Date/Time: {now.toString()}</div>
-      </section>
-
-      <hr style={{ margin: '32px 0' }} />
-
-      <section style={{ marginBottom: 24 }}>
-        <h3>useTimeZone</h3>
-        <div>Current Time Zone: {String(timeZone)}</div>
-        <div>
-          Convert Now to Time Zone:
-          <input
-            type="text"
-            value={targetZone}
-            onChange={e => setTargetZone(e.target.value)}
-            style={{ marginLeft: 8 }}
-          />
-          <div>
-            Converted: {typeof converted === "string" ? converted : converted.toString()}
+      <div style={{ display: "flex", width: "100vw", height: "100vh", fontFamily: 'Inter, sans-serif' }}>
+        <aside style={{
+          width: "14rem", 
+          background: '#23272f',
+          color: '#fff',
+          padding: 0,
+          boxShadow: '0.125rem 0 0.5rem #0001', 
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
+          <div style={{
+            fontWeight: 700,
+            fontSize: "1.375rem", 
+            padding: "1.375rem 0 0.75rem 0", 
+            letterSpacing: 1,
+            borderBottom: '1px solid #333',
+            textAlign: 'center'
+          }}>
+            <span role="img" aria-label="clock" style={{ marginRight: "0.5rem" }}>⏰</span>
+            Temporal React Hooks
           </div>
-        </div>
-      </section>
-
-      <hr style={{ margin: '32px 0' }} />
-
-      <section style={{ marginBottom: 24 }}>
-        <h3>useRelativeTime</h3>
-        <div>
-          <label>
-            Demo Base Time (3 min ago): {demoRelativeBase.toString()}
-            <br />
-            <button onClick={() => setDemoRelativeBase(now.subtract({ minutes: 3 }))}>Set 3 min ago</button>
-            <button onClick={() => setDemoRelativeBase(now.add({ minutes: 5 }))} style={{ marginLeft: 8 }}>Set 5 min in future</button>
-          </label>
-          <div>Relative: {relative}</div>
-        </div>
-      </section>
-
-      <hr style={{ margin: '32px 0' }} />
-
-      <section>
-        <h3>useDuration</h3>
-        <div>Duration: {formatDuration(duration)}</div>
-        <div>
-          <button onClick={() => setDuration(createDuration({ hours: 2 }))}>Set to 2 hours</button>
-          <button onClick={() => setDuration(createDuration({ minutes: 45 }))} style={{ marginLeft: 8 }}>Set to 45 min</button>
-        </div>
-        <div style={{ marginTop: 8 }}>Now + Duration: {addedDateTime.toString()}</div>
-        <div>Now - Duration: {subtractedDateTime.toString()}</div>
-      </section>
-
-      <hr style={{ margin: '32px 0' }} />
-
-      <section>
-        <h3>useTimeAgo</h3>
-        <div style={{ marginBottom: 8 }}>
-          <label>Pick a time:
-            {agoOptions.map(opt => (
-              <button
-                key={opt.label}
-                style={{ marginLeft: 8, fontWeight: agoDateTime.equals(opt.value) ? 'bold' : 'normal' }}
-                onClick={() => setAgoDateTime(opt.value)}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </label>
-        </div>
-        <p>
-          <b>Selected time:</b> {agoDateTime.toString()}
-        </p>
-        <p>
-          <b>Time ago:</b> {agoString}
-        </p>
-      </section>
-
-      <hr style={{ margin: '32px 0' }} />
-
-      <section>
-        <h3>useLocaleDateTime</h3>
-        <div style={{ marginBottom: 8 }}>
-          <label>Locale:
-            {localeOptions.map(opt => (
-              <button
-                key={opt.value}
-                style={{ marginLeft: 8, fontWeight: locale === opt.value ? 'bold' : 'normal' }}
-                onClick={() => setLocale(opt.value)}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </label>
-        </div>
-        <div style={{ marginBottom: 8 }}>
-          <label>Date Style:
-            {styleOptions.map(opt => (
-              <button
-                key={opt}
-                style={{ marginLeft: 8, fontWeight: dateStyle === opt ? 'bold' : 'normal' }}
-                onClick={() => setDateStyle(opt)}
-              >
-                {opt}
-              </button>
-            ))}
-          </label>
-        </div>
-        <div style={{ marginBottom: 8 }}>
-          <label>Time Style:
-            {styleOptions.map(opt => (
-              <button
-                key={opt}
-                style={{ marginLeft: 8, fontWeight: timeStyle === opt ? 'bold' : 'normal' }}
-                onClick={() => setTimeStyle(opt)}
-              >
-                {opt}
-              </button>
-            ))}
-          </label>
-        </div>
-        <p>
-          <b>Current date/time ({locale}, {dateStyle}/{timeStyle}):</b> <br />
-          <span>{formattedLocaleDateTime}</span>
-        </p>
-      </section>
-
-      <hr style={{ margin: '32px 0' }} />
-
-      <section>
-        <h3>useTemporalAdd / useTemporalSubtract</h3>
-        <div style={{ marginBottom: 16, marginTop: 16 }}>
-          <b>Base Date:</b> {baseDate.toString()}
-        </div>
-        <div style={{ marginBottom: 16, marginTop: 16 }}>
-          <b>Amount to Add/Subtract:</b>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 24px', marginTop: 8, marginBottom: 8, justifyContent: 'center', alignItems: 'center' }}>
-            {["seconds","minutes","hours","days","weeks","months","years"].map(unit => (
-              <span key={unit}>
-                <label>
-                  {unit}: <input
-                    type="number"
-                    min={0}
-                    value={amount[unit as keyof Temporal.DurationLike] ?? ""}
-                    onChange={e => handleAmountChange(unit as keyof Temporal.DurationLike, Number(e.target.value))}
-                    style={{ width: 50, marginLeft: 4, marginRight: 4 }}
-                  />
-                </label>
-              </span>
-            ))}
+          <nav 
+            ref={navRef}
+            style={{ flex: 1, overflowY: "auto", maxHeight: "calc(100vh - 8.5rem)", position: 'relative', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column' }}>
+              {showUpArrow && (
+                <div style={{
+                  position: 'sticky',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  background: 'linear-gradient(to bottom, #23272f 80%, transparent)',
+                  zIndex: 2,
+                  textAlign: 'center',
+                  pointerEvents: 'none',
+                  fontSize: '1.25rem',
+                  color: '#aaa',
+                  height: '2rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>▲</div>
+              )}
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                {demoSections.map(section => (
+                  <div
+                    key={section.key}
+                    onClick={() => setSelected(section.key)}
+                    onMouseEnter={() => setHovered(section.key)}
+                    onMouseLeave={() => setHovered(null)}
+                    style={{
+                      padding: "0.75rem 0.75rem", 
+                      background: selected === section.key ? '#3c4250' : hovered === section.key ? '#353b48' : 'none',
+                      cursor: 'pointer',
+                      fontWeight: selected === section.key ? 600 : 400,
+                      borderLeft: selected === section.key ? '0.25rem solid #2bd4c5' : '0.25rem solid transparent', 
+                      color: selected === section.key || hovered === section.key ? '#fff' : '#c0c4cc',
+                      transition: 'background 0.2s, border-left 0.2s, color 0.2s',
+                      display: 'block',
+                    }}
+                  >
+                    {section.label}
+                  </div>
+                ))}
+              </div>
+              {showDownArrow && (
+                <div style={{
+                  position: 'sticky',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  background: 'linear-gradient(to top, #23272f 80%, transparent)',
+                  zIndex: 2,
+                  textAlign: 'center',
+                  pointerEvents: 'none',
+                  fontSize: '1.25rem',
+                  color: '#aaa',
+                  height: '2rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>▼</div>
+              )}
+            </div>
+          </nav>
+          <div style={{
+            padding: "1rem 1.5rem", 
+            fontSize: "0.75rem", 
+            color: "#aaa",
+            borderTop: "1px solid #333",
+            textAlign: "center"
+          }}>
+            {new Date().getFullYear()} temporal-react-hook
           </div>
-        </div>
-        <div style={{ marginBottom: 16, marginTop: 16 }}>
-          <button onClick={() => setBaseDate(Temporal.PlainDateTime.from(now.toString()))}>Reset Base Date to Now</button>
-        </div>
-        <div>
-          <b>Result (Add):</b> {resultAdd.toString()}
-        </div>
-        <div>
-          <b>Result (Subtract):</b> {resultSubtract.toString()}
-        </div>
-      </section>
-
-      <hr style={{ margin: '32px 0' }} />
-
-      <section>
-        <h3>useTemporalFormat</h3>
-        <div style={{ marginBottom: 8 }}>
-          <b>Date to Format:</b> {formatDate.toString()}
-          <button style={{ marginLeft: 8 }} onClick={() => setFormatDate(Temporal.Now.plainDateTimeISO())}>Now</button>
-          <button style={{ marginLeft: 8 }} onClick={() => setFormatDate(formatDate.add({ days: 1 }))}>+1 day</button>
-          <button style={{ marginLeft: 8 }} onClick={() => setFormatDate(formatDate.subtract({ days: 1 }))}>-1 day</button>
-        </div>
-        <div style={{ marginBottom: 8 }}>
-          <b>Preset:</b>
-          {presetOptions.map(opt => (
-            <button
-              key={opt}
-              style={{ marginLeft: 8, fontWeight: formatPreset === opt ? 'bold' : 'normal' }}
-              onClick={() => setFormatPreset(opt)}
-            >
-              {opt}
-            </button>
-          ))}
-        </div>
-        <div style={{ marginBottom: 8 }}>
-          <b>Locale:</b>
-          {localeOptionsFmt.map(opt => (
-            <button
-              key={opt.value}
-              style={{ marginLeft: 8, fontWeight: formatLocale === opt.value ? 'bold' : 'normal' }}
-              onClick={() => setFormatLocale(opt.value)}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-        <div>
-          <b>Formatted:</b> {formatted}
-        </div>
-      </section>
-
-      <hr style={{ margin: '32px 0' }} />
-
-      <section>
-        <h3>Date Range Hooks</h3>
-        <div>
-          <b>Now:</b> {now.toString()}
-        </div>
-        <div style={{ marginTop: 8 }}>
-          <b>Is Today?</b> {String(useIsToday(now))}
-        </div>
-        <div style={{ marginTop: 8 }}>
-          <b>Is This Week?</b> {String(useIsThisWeek(now))}
-        </div>
-        <div style={{ marginTop: 8 }}>
-          <b>Is This Month?</b> {String(useIsThisMonth(now))}
-        </div>
-        <div style={{ marginTop: 8 }}>
-          <b>Is This Year?</b> {String(useIsThisYear(now))}
-        </div>
-        <div style={{ marginTop: 16 }}>
-          <b>Pick a date to test:</b>
-          <button style={{ marginLeft: 8 }} onClick={() => setDemoRelativeBase(now.subtract({ days: 1 }))}>Yesterday</button>
-          <button style={{ marginLeft: 8 }} onClick={() => setDemoRelativeBase(now.subtract({ weeks: 1 }))}>Last Week</button>
-          <button style={{ marginLeft: 8 }} onClick={() => setDemoRelativeBase(now.subtract({ months: 1 }))}>Last Month</button>
-          <button style={{ marginLeft: 8 }} onClick={() => setDemoRelativeBase(now.subtract({ years: 1 }))}>Last Year</button>
-        </div>
-        <div style={{ marginTop: 8 }}>
-          <b>Selected:</b> {demoRelativeBase.toString()}<br />
-          <b>Is Today?</b> {String(useIsToday(demoRelativeBase))}<br />
-          <b>Is This Week?</b> {String(useIsThisWeek(demoRelativeBase))}<br />
-          <b>Is This Month?</b> {String(useIsThisMonth(demoRelativeBase))}<br />
-          <b>Is This Year?</b> {String(useIsThisYear(demoRelativeBase))}
-        </div>
-      </section>
-
-      <hr style={{ margin: '32px 0' }} />
-    </div>
+        </aside>
+        <main style={{ width: "100%"}}>
+          <div style={{display: 'flex', width: "100%", height: "100%" }}>
+            {demoSections.find(s => s.key === selected)?.component}
+          </div>
+        </main>
+      </div>
   );
 };
 

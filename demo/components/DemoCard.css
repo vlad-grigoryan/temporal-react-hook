@@ -1,0 +1,81 @@
+/* Card container for demo components */
+.demo-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 0.25rem 1.5rem #0001, 0 1px 2px #0000000d;
+  margin-bottom: 2rem;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  transition: box-shadow 0.2s;
+}
+.demo-card:hover {
+  box-shadow: 0 0.5rem 2rem #0002, 0 2px 4px #0000001a;
+}
+
+.demo-card h3 {
+  font-size: 1.5rem;
+  color: #2bd4c5;
+  margin-bottom: 1.25rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+.demo-card label,
+.demo-card b {
+  color: #3c4250;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.demo-card input[type="text"],
+.demo-card input[type="number"] {
+  border: 1px solid #e0e3ea;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.demo-card input:focus {
+  border-color: #2bd4c5;
+}
+
+.demo-card button {
+  background: #f8f9fb;
+  border: 1px solid #e0e3ea;
+  border-radius: 0.5rem;
+  color: #23272f;
+  padding: 0.5rem 1.25rem;
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border 0.2s, color 0.2s;
+}
+.demo-card button:hover,
+.demo-card button:focus {
+  background: #2bd4c5;
+  color: #fff;
+  border-color: #2bd4c5;
+}
+
+.demo-card .demo-row {
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.demo-card .demo-row:last-child {
+  margin-bottom: 0;
+}
+
+.demo-card .demo-value {
+  margin-left: 0.75rem;
+  font-family: monospace;
+  color: #23272f;
+  font-size: 1.1rem;
+}

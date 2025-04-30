@@ -19,6 +19,8 @@
 #### [useTemporalAdd](#usetemporaladd-hook)
 #### [useTemporalSubtract](#usetemporalsubtract-hook)
 #### [useTemporalFormat](#usetemporalformat-hook)
+#### [useTemporalStartOf](#usetemporalstartof-hook)
+#### [useTemporalEndOf](#usetemporalendof-hook)
 
 
 ### Description for Hooks
@@ -373,14 +375,67 @@ const formatted = useTemporalFormat(date, 'long', 'fr-FR');
 
 ---
 
-**Use Cases:**
-- Scheduling or rescheduling events
-- Calculating deadlines or reminders
-- Time-based navigation (e.g., previous/next week)
-- Building custom date pickers or timeline controls
+## `useTemporalStartOf` Hook
+
+Returns the start of a specified unit (`second`, `minute`, `hour`, `day`, `week`, `month`, `year`) for a Temporal.PlainDateTime.
+
+**Signature:**
+```ts
+const startOf = useTemporalStartOf();
+const result = startOf(date, 'week');
+```
+
+**Parameters:**
+- `date`: `Temporal.PlainDateTime` — The base date/time.
+- `unit`: `'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'` — The unit to get the start of.
+
+**Returns:**
+- `Temporal.PlainDateTime` — The start of the specified unit.
+
+**Example Usage:**
+```tsx
+import { useTemporalStartOf } from 'temporal-react-hook';
+import { Temporal } from '@js-temporal/polyfill';
+
+const startOf = useTemporalStartOf();
+const now = Temporal.Now.plainDateTimeISO();
+const weekStart = startOf(now, 'week');
+// weekStart is the start of the current ISO week
+```
 
 ---
 
-## Compatibility
+## `useTemporalEndOf` Hook
 
-This library is compatible with @js-temporal/polyfill v0.5.x and above. If you are upgrading from an earlier version, please check the [Temporal polyfill changelog](https://github.com/js-temporal/temporal-polyfill/blob/main/CHANGELOG.md) for breaking changes and migration tips.
+Returns the end of a specified unit (`second`, `minute`, `hour`, `day`, `week`, `month`, `year`) for a Temporal.PlainDateTime.
+
+**Signature:**
+```ts
+const endOf = useTemporalEndOf();
+const result = endOf(date, 'month');
+```
+
+**Parameters:**
+- `date`: `Temporal.PlainDateTime` — The base date/time.
+- `unit`: `'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'` — The unit to get the end of.
+
+**Returns:**
+- `Temporal.PlainDateTime` — The end of the specified unit.
+
+**Example Usage:**
+```tsx
+import { useTemporalEndOf } from 'temporal-react-hook';
+import { Temporal } from '@js-temporal/polyfill';
+
+const endOf = useTemporalEndOf();
+const now = Temporal.Now.plainDateTimeISO();
+const monthEnd = endOf(now, 'month');
+// monthEnd is the last moment of the current month
+```
+
+**Use Cases:**
+- Calendar and scheduling UIs (highlighting current week/month)
+- Time-based filtering (e.g., show all events in the current week)
+- Generating date/time ranges for reports or charts
+
+---
