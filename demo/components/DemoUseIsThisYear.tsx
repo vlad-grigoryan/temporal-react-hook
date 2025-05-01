@@ -34,6 +34,16 @@ export default function DemoUseIsThisYear() {
       <div className="demo-row">
         <b>Is This Year?:</b> <span className="demo-value">{isThisYear ? 'Yes' : 'No'}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useIsThisYear checks if a Temporal date/time is in the current calendar year.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const isThisYear = useIsThisYear(date);</span>
+        </div>
+      </div>
     </section>
   );
 }

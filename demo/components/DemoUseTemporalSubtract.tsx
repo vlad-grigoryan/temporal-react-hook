@@ -28,6 +28,16 @@ export default function DemoUseTemporalSubtract() {
       <div className="demo-row">
         <b>Result:</b> <span className="demo-value">{result.toString()}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useTemporalSubtract subtracts a specified amount from a Temporal date/time object.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const subtracted = useTemporalSubtract(dateTime, &#123; days: 1 &#125;);</span>
+        </div>
+      </div>
     </section>
   );
 }

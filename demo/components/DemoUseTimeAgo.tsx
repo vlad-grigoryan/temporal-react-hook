@@ -16,6 +16,16 @@ export default function DemoUseTimeAgo() {
       <div className="demo-row">
         <b>Time Ago:</b> <span className="demo-value">{timeAgo}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useTimeAgo returns a human-friendly relative time string for a given Temporal date/time object.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const timeAgo = useTimeAgo(dateTime);</span>
+        </div>
+      </div>
     </section>
   );
 }

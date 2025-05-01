@@ -39,6 +39,16 @@ export default function DemoUseTemporalStartEndOf() {
       <div className="demo-row">
         <b>End of {sofUnit}:</b> <span className="demo-value">{sofEnd.toString()}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useTemporalStartOf and useTemporalEndOf return the start or end of a given unit for a Temporal date/time object.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const startOfMonth = useTemporalStartOf(dateTime, 'month');</span>
+        </div>
+      </div>
     </section>
   );
 }

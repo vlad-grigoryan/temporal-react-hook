@@ -24,6 +24,16 @@ export default function DemoUseDuration() {
         <b>Now - Duration:</b>
         <span className="demo-value">{subtracted.toString()}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useDuration helps create, manipulate, and format Temporal.Duration objects.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const &#123; createDuration, addDuration, subtractDuration, formatDuration &#125; = useDuration();</span>
+        </div>
+      </div>
     </section>
   );
 }

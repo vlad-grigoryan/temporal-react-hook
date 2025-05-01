@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useTemporalEndOf = exports.useTemporalStartOf = exports.useTemporalFormat = exports.useTemporalSubtract = exports.useTemporalAdd = exports.useIsThisYear = exports.useIsThisMonth = exports.useIsThisWeek = exports.useIsToday = exports.useTimeAgo = exports.useLocaleDateTime = exports.useRelativeTime = exports.useDuration = exports.useTimeZone = exports.useCurrentDateTime = void 0;
+exports.useIsSame = exports.useTemporalEndOf = exports.useTemporalStartOf = exports.useTemporalFormat = exports.useTemporalSubtract = exports.useTemporalAdd = exports.useIsThisYear = exports.useIsThisMonth = exports.useIsThisWeek = exports.useIsToday = exports.useTimeAgo = exports.useLocaleDateTime = exports.useRelativeTime = exports.useDuration = exports.useTimeZone = exports.useCurrentDateTime = void 0;
 var useCurrentDateTime_1 = require("./useCurrentDateTime");
 Object.defineProperty(exports, "useCurrentDateTime", { enumerable: true, get: function () { return __importDefault(useCurrentDateTime_1).default; } });
 var useTimeZone_1 = require("./useTimeZone");
@@ -34,3 +34,5 @@ var useTemporalStartOf_1 = require("./useTemporalStartOf");
 Object.defineProperty(exports, "useTemporalStartOf", { enumerable: true, get: function () { return __importDefault(useTemporalStartOf_1).default; } });
 var useTemporalEndOf_1 = require("./useTemporalEndOf");
 Object.defineProperty(exports, "useTemporalEndOf", { enumerable: true, get: function () { return __importDefault(useTemporalEndOf_1).default; } });
+var useIsSame_1 = require("./useIsSame");
+Object.defineProperty(exports, "useIsSame", { enumerable: true, get: function () { return __importDefault(useIsSame_1).default; } });

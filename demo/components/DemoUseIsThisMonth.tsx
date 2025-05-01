@@ -34,6 +34,16 @@ export default function DemoUseIsThisMonth() {
       <div className="demo-row">
         <b>Is This Month?:</b> <span className="demo-value">{isThisMonth ? 'Yes' : 'No'}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useIsThisMonth checks if a Temporal date/time is in the current calendar month.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const isThisMonth = useIsThisMonth(date);</span>
+        </div>
+      </div>
     </section>
   );
 }

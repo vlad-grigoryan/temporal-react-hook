@@ -37,6 +37,16 @@ export default function DemoUseLocaleDateTime() {
       <div className="demo-row">
         <b>Formatted:</b> <span className="demo-value">{formatted}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useLocaleDateTime formats a Temporal date/time object to a string using the specified locale and formatting options.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const formatted = useLocaleDateTime(dateTime, 'en-US', &#123; dateStyle: 'full', timeStyle: 'short' &#125;);</span>
+        </div>
+      </div>
     </section>
   );
 }

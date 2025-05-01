@@ -34,6 +34,16 @@ export default function DemoUseTimeZone() {
       <div className="demo-row">
         <b>Result:</b> <span className="demo-value">{converted}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useTimeZone provides the user's current time zone and a utility to convert a Temporal date/time object to a specified IANA time zone.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const &#123; currentTimeZone, toTimeZone &#125; = useTimeZone();</span>
+        </div>
+      </div>
     </section>
   );
 }

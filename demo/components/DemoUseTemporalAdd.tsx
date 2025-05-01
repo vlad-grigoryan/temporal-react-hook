@@ -28,6 +28,16 @@ export default function DemoUseTemporalAdd() {
       <div className="demo-row">
         <b>Result:</b> <span className="demo-value">{result.toString()}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useTemporalAdd adds a specified amount to a Temporal date/time object.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const added = useTemporalAdd(dateTime, &#123; days: 1 &#125;);</span>
+        </div>
+      </div>
     </section>
   );
 }

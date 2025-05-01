@@ -34,6 +34,16 @@ export default function DemoUseIsThisWeek() {
       <div className="demo-row">
         <b>Is This Week?:</b> <span className="demo-value">{isThisWeek ? 'Yes' : 'No'}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useIsThisWeek checks if a Temporal date/time is in the current calendar week.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const isThisWeek = useIsThisWeek(date);</span>
+        </div>
+      </div>
     </section>
   );
 }

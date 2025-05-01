@@ -13,6 +13,7 @@ import DemoUseTemporalFormat from "./components/DemoUseTemporalFormat";
 import DemoUseTemporalAdd from "./components/DemoUseTemporalAdd";
 import DemoUseTemporalSubtract from "./components/DemoUseTemporalSubtract";
 import DemoUseTemporalStartEndOf from "./components/DemoUseTemporalStartEndOf";
+import DemoUseIsSame from "./components/DemoUseIsSame";
 
 const demoSections = [
   { key: "currentdatetime", label: "useCurrentDateTime", component: <DemoUseCurrentDateTime /> },
@@ -25,6 +26,7 @@ const demoSections = [
   { key: "isthisweek", label: "useIsThisWeek", component: <DemoUseIsThisWeek /> },
   { key: "isthismonth", label: "useIsThisMonth", component: <DemoUseIsThisMonth /> },
   { key: "isthisyear", label: "useIsThisYear", component: <DemoUseIsThisYear /> },
+  { key: "issame", label: "useIsSame", component: <DemoUseIsSame /> },
   { key: "format", label: "useTemporalFormat", component: <DemoUseTemporalFormat /> },
   { key: "add", label: "useTemporalAdd", component: <DemoUseTemporalAdd /> },
   { key: "subtract", label: "useTemporalSubtract", component: <DemoUseTemporalSubtract /> },

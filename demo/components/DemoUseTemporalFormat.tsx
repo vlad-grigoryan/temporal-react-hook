@@ -55,6 +55,16 @@ export default function DemoUseTemporalFormat() {
         <b>Formatted:</b>
         <span className="demo-value">{formatted}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useTemporalFormat formats a Temporal date/time object to a string using a preset style and locale.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const formatted = useTemporalFormat(dateTime, 'medium', 'en-US');</span>
+        </div>
+      </div>
     </section>
   );
 }

@@ -34,6 +34,16 @@ export default function DemoUseIsToday() {
       <div className="demo-row">
         <b>Is Today?:</b> <span className="demo-value">{isToday ? 'Yes' : 'No'}</span>
       </div>
+      <div className="demo-info-card">
+        <div className="demo-description">
+          <strong>Description:</strong>
+          <span>useIsToday checks if a given Temporal date/time is today.</span>
+        </div>
+        <div className="demo-usage">
+          <strong>Usage:</strong>
+          <span>const isToday = useIsToday(dateTime);</span>
+        </div>
+      </div>
     </section>
   );
 }
