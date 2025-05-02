@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Temporal } from '@js-temporal/polyfill';
 import useIsSame, { IsSameUnit } from '../../src/useIsSame';
+import useCurrentDateTime from '../../src/useCurrentDateTime';
+import { Temporal } from '@js-temporal/polyfill';
 
 export default function DemoUseIsSame() {
-  const [dateA, setDateA] = useState(() => Temporal.Now.plainDateTimeISO());
-  const [dateB, setDateB] = useState(() => Temporal.Now.plainDateTimeISO().add({ days: 1 }));
+  const currentDateTime = useCurrentDateTime();
+  const [dateA, setDateA] = useState(currentDateTime);
+  const [dateB, setDateB] = useState(() => currentDateTime.add({ days: 1 }));
   const [unit, setUnit] = useState<IsSameUnit>('day');
 
   const isSame = useIsSame(dateA, dateB, unit);
@@ -54,11 +56,27 @@ export default function DemoUseIsSame() {
       <div className="demo-info-card">
         <div className="demo-description">
           <strong>Description:</strong>
-          <span>useIsSame compares two Temporal dates or times by a chosen unit (year, month, week, day, hour, minute, second).</span>
+          <span>Compares two Temporal dates or times to determine if they are the same at the specified unit (year, month, week, day, hour, minute, second).</span>
         </div>
         <div className="demo-usage">
-          <strong>Usage:</strong>
-          <span>const isSame = useIsSame(dateA, dateB, 'day');</span>
+          <span>
+            <strong>Syntax:</strong> useIsSame(dateA, dateB, unit)<br/>
+            <strong>Parameters:</strong><br/>
+            - dateA: First Temporal date/time object to compare<br/>
+            - dateB: Second Temporal date/time object to compare<br/>
+            - unit: Unit for comparison ('year', 'month', 'week', 'day', 'hour', 'minute', 'second')<br/>
+            <strong>Returns:</strong> Boolean indicating whether the two dates are the same in the specified unit<br/>
+            <strong>Example:</strong>
+            <code>
+              import &#123; useIsSame, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              <br/>
+              const now = useCurrentDateTime();<br/>
+              const tomorrow = now.add(&#123; days: 1 &#125;);<br/>
+              <br/>
+              const isSameDay = useIsSame(now, tomorrow, 'day'); // false<br/>
+              const isSameMonth = useIsSame(now, tomorrow, 'month'); // true
+            </code>
+          </span>
         </div>
       </div>
     </section>

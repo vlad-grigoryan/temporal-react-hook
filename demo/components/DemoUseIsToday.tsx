@@ -1,9 +1,10 @@
 import { useState } from "react";
 import useIsToday from "../../src/useIsToday";
-import { Temporal } from "@js-temporal/polyfill";
+import useCurrentDateTime from "../../src/useCurrentDateTime";
 
 export default function DemoUseIsToday() {
-  const today = Temporal.Now.plainDateISO();
+  const now = useCurrentDateTime();
+  const today = now.toPlainDate();
   const [date, setDate] = useState(today);
   // Convert PlainDate to PlainDateTime at midnight for compatibility
   const dateTime = date.toPlainDateTime({ hour: 0, minute: 0, second: 0, millisecond: 0 });
@@ -37,11 +38,26 @@ export default function DemoUseIsToday() {
       <div className="demo-info-card">
         <div className="demo-description">
           <strong>Description:</strong>
-          <span>useIsToday checks if a given Temporal date/time is today.</span>
+          <span>Returns true if the provided date is today.</span>
         </div>
         <div className="demo-usage">
-          <strong>Usage:</strong>
-          <span>const isToday = useIsToday(dateTime);</span>
+          <span>
+            <strong>Syntax:</strong> useIsToday(dateTime)<br/>
+            <strong>Parameters:</strong><br/>
+            - dateTime: A Temporal date/time object (PlainDateTime, ZonedDateTime, or Instant)<br/>
+            <strong>Returns:</strong> A boolean indicating whether the provided date is today<br/>
+            <strong>Example:</strong>
+            <code>
+              import &#123; useIsToday, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              <br/>
+              // Get the current date/time
+              const now = useCurrentDateTime();<br/>
+              // Create a date/time to check
+              const dateTime = now; // or any other Temporal date/time<br/>
+              const isToday = useIsToday(dateTime);<br/>
+              // Returns true if dateTime is today, false otherwise
+            </code>
+          </span>
         </div>
       </div>
     </section>

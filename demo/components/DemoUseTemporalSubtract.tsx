@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Temporal } from "@js-temporal/polyfill";
 import useTemporalSubtract from "../../src/useTemporalSubtract";
+import useCurrentDateTime from "../../src/useCurrentDateTime";
 
 export default function DemoUseTemporalSubtract() {
-  const [baseDate, setBaseDate] = useState(() => Temporal.Now.plainDateTimeISO());
+  const currentDateTime = useCurrentDateTime();
+  const [baseDate, setBaseDate] = useState(currentDateTime);
   const [amount, setAmount] = useState({ days: 1 });
   const subtract = useTemporalSubtract();
   const result = subtract(baseDate, amount);
@@ -13,7 +14,7 @@ export default function DemoUseTemporalSubtract() {
       <h3>useTemporalSubtract</h3>
       <div className="demo-row">
         <b>Base Date:</b> <span className="demo-value">{baseDate.toString()}</span>
-        <button style={{ marginLeft: 8 }} onClick={() => setBaseDate(Temporal.Now.plainDateTimeISO())}>Now</button>
+        <button style={{ marginLeft: 8 }} onClick={() => setBaseDate(useCurrentDateTime())}>Now</button>
       </div>
       <div className="demo-row">
         <b>Days to Subtract:</b>
@@ -31,11 +32,25 @@ export default function DemoUseTemporalSubtract() {
       <div className="demo-info-card">
         <div className="demo-description">
           <strong>Description:</strong>
-          <span>useTemporalSubtract subtracts a specified amount from a Temporal date/time object.</span>
+          <span>Subtracts a specified amount of seconds, minutes, hours, days, weeks, months, or years from a Temporal.PlainDateTime.</span>
         </div>
         <div className="demo-usage">
-          <strong>Usage:</strong>
-          <span>const subtracted = useTemporalSubtract(dateTime, &#123; days: 1 &#125;);</span>
+          <span>
+            <strong>Syntax:</strong> useTemporalSubtract()<br/>
+            <strong>Parameters:</strong><br/>
+            - date: Temporal.PlainDateTime — The base date/time<br/>
+            - amount: Partial&lt;Temporal.DurationLike&gt; — Object with any combination of seconds, minutes, hours, days, weeks, months, years<br/>
+            <strong>Returns:</strong> Temporal.PlainDateTime — The new date/time after subtraction<br/>
+            <strong>Example:</strong><br/>
+            <code>
+              import &#123; useTemporalSubtract, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              <br/>
+              const subtract = useTemporalSubtract();<br/>
+              const now = useCurrentDateTime();<br/>
+              const yesterday = subtract(now, &#123; days: 1 &#125;);<br/>
+              // yesterday is now minus one day<br/>
+            </code>
+          </span>
         </div>
       </div>
     </section>

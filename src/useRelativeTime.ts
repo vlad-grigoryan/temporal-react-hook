@@ -4,8 +4,13 @@ import { Temporal } from '@js-temporal/polyfill';
 /**
  * useRelativeTime - React hook for human-friendly relative time strings.
  * @param input Temporal.PlainDateTime | Temporal.ZonedDateTime | Temporal.Instant
- * @returns string (e.g. "3 minutes ago", "in 2 hours")
+ * @param options Configuration options
+ * @param options.refreshIntervalMs How often to refresh the relative time (default: 10000ms)
+ * @param options.locale Locale for formatting (default: undefined, uses browser's locale)
+ * @param options.style Formatting style - 'long' ("in 5 hours"), 'short' ("in 5 hr"), or 'narrow' ("in 5h")
+ * @returns string (e.g. "3 minutes ago", "in 2 hours", "last month")
  */
+
 function getInstant(input: any): Temporal.Instant {
   if (typeof input.toInstant === 'function') {
     return input.toInstant();
@@ -17,47 +22,123 @@ function getInstant(input: any): Temporal.Instant {
   }
 }
 
-function getRelativeString(from: Temporal.Instant, to: Temporal.Instant): string {
-  // Fix: largestUnit must be one of the allowed units (e.g., 'hour', not 'days')
+function getRelativeString(from: Temporal.Instant, to: Temporal.Instant, style?: string): string {
+  // Use hour as largest unit as that's what Temporal allows
   const duration = from.until(to, { largestUnit: 'hour' });
   const seconds = duration.total({ unit: 'seconds' });
+  
+  if (Math.abs(seconds) < 45) return 'just now';
+  
+  // Custom formatting without relying on Intl.RelativeTimeFormat
   const absSeconds = Math.abs(seconds);
-  const absMinutes = Math.abs(duration.total({ unit: 'minutes' }));
-  const absHours = Math.abs(duration.total({ unit: 'hours' }));
-  const absDays = Math.abs(duration.total({ unit: 'hours' }) / 24);
+  const isInFuture = seconds < 0; // If negative, the reference time is in the future
+  
+  // Create formatted strings based on style
+  const formatValue = (value: number, unit: string): string => {
+    const plural = value === 1 ? '' : 's';
+    
+    if (style === 'narrow') {
+      // Very brief format: '5h', '2d'
+      return `${value}${unit.charAt(0)}`;
+    } else if (style === 'short') {
+      // Short format: '5 hr', '2 days'
+      const shortUnit = unit === 'hour' ? 'hr' : unit === 'minute' ? 'min' : unit;
+      return `${value} ${shortUnit}${plural}`;
+    } else {
+      // Long format: '5 hours', '2 days'
+      return `${value} ${unit}${plural}`;
+    }
+  };
+  
+  const formatRelative = (value: number, unit: string): string => {
+    const formatted = formatValue(value, unit);
+    
+    if (style === 'narrow') {
+      return isInFuture ? `${formatted}` : `-${formatted}`;
+    } else {
+      return isInFuture ? `in ${formatted}` : `${formatted} ago`;
+    }
+  };
+  
+  // Handle different time scales
+  if (absSeconds < 90) { // Less than 1.5 minutes
+    return formatRelative(1, 'minute');
+  }
+  
+  if (absSeconds < 3600) { // Less than 1 hour
+    const minutes = Math.round(duration.total({ unit: 'minutes' }));
+    return formatRelative(minutes, 'minute');
+  }
+  
+  if (absSeconds < 86400) { // Less than 1 day
+    const hours = Math.round(duration.total({ unit: 'hours' }));
+    return formatRelative(hours, 'hour');
+  }
+  
+  if (absSeconds < 604800) { // Less than 1 week
+    const days = Math.round(absSeconds / 86400);
+    return formatRelative(days, 'day');
+  }
+  
+  if (absSeconds < 2592000) { // Less than 30 days (approx 1 month)
+    const weeks = Math.round(absSeconds / 604800);
+    return formatRelative(weeks, 'week');
+  }
+  
+  if (absSeconds < 31536000) { // Less than 1 year
+    const months = Math.round(absSeconds / 2592000);
+    return formatRelative(months, 'month');
+  }
+  
+  // More than 1 year
+  const years = Math.round(absSeconds / 31536000);
+  return formatRelative(years, 'year');
+}
 
-  if (absSeconds < 45) return 'just now';
-  if (absMinutes < 2) return seconds < 0 ? 'in a minute' : 'a minute ago';
-  if (absMinutes < 60) return seconds < 0 ? `in ${Math.round(absMinutes)} minutes` : `${Math.round(absMinutes)} minutes ago`;
-  if (absHours < 2) return seconds < 0 ? 'in an hour' : 'an hour ago';
-  if (absHours < 24) return seconds < 0 ? `in ${Math.round(absHours)} hours` : `${Math.round(absHours)} hours ago`;
-  if (absDays < 2) return seconds < 0 ? 'tomorrow' : 'yesterday';
-  if (absDays < 7) return seconds < 0 ? `in ${Math.round(absDays)} days` : `${Math.round(absDays)} days ago`;
-  // Fallback: show ISO date
-  return from.epochNanoseconds < to.epochNanoseconds
-    ? from.toZonedDateTimeISO(Temporal.Now.zonedDateTimeISO().timeZoneId).toPlainDate().toString()
-    : to.toZonedDateTimeISO(Temporal.Now.zonedDateTimeISO().timeZoneId).toPlainDate().toString();
+interface UseRelativeTimeOptions {
+  refreshIntervalMs?: number;
+  locale?: string;
+  style?: 'long' | 'short' | 'narrow';
 }
 
 export default function useRelativeTime(
   input: Temporal.PlainDateTime | Temporal.ZonedDateTime | Temporal.Instant,
-  options?: { refreshIntervalMs?: number }
+  options?: UseRelativeTimeOptions
 ): string {
-  const refreshMs = options?.refreshIntervalMs ?? 10000;
+  const { 
+    refreshIntervalMs = 10000, 
+    locale, 
+    style = 'long' 
+  } = options || {};
+  
   const [relative, setRelative] = useState(() => {
     const now = Temporal.Now.instant();
-    return getRelativeString(getInstant(input), now);
+    return getRelativeString(getInstant(input), now, style);
   });
 
   useEffect(() => {
     const update = () => {
       const now = Temporal.Now.instant();
-      setRelative(getRelativeString(getInstant(input), now));
+      setRelative(getRelativeString(getInstant(input), now, style));
     };
-    update();
-    const id = setInterval(update, refreshMs);
+    
+    update(); // Initial update
+    
+    // Calculate next meaningful refresh time based on the current relative time
+    let nextRefresh = refreshIntervalMs;
+    
+    // For "just now", update more frequently
+    if (relative === 'just now') {
+      nextRefresh = Math.min(nextRefresh, 5000);
+    }
+    // For minute-level updates, refresh around minute boundaries
+    else if (relative.includes('minute')) {
+      nextRefresh = Math.min(nextRefresh, 30000);
+    }
+    
+    const id = setInterval(update, nextRefresh);
     return () => clearInterval(id);
-  }, [input, refreshMs]);
+  }, [input, refreshIntervalMs, locale, style, relative]);
 
   return relative;
 }

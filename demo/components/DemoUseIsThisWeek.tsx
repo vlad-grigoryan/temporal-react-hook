@@ -1,9 +1,10 @@
 import { useState } from "react";
 import useIsThisWeek from "../../src/useIsThisWeek";
-import { Temporal } from "@js-temporal/polyfill";
+import useCurrentDateTime from "../../src/useCurrentDateTime";
 
 export default function DemoUseIsThisWeek() {
-  const today = Temporal.Now.plainDateISO();
+  const now = useCurrentDateTime();
+  const today = now.toPlainDate();
   const [date, setDate] = useState(today);
   // Convert PlainDate to PlainDateTime at midnight for compatibility
   const dateTime = date.toPlainDateTime({ hour: 0, minute: 0, second: 0, millisecond: 0 });
@@ -37,11 +38,26 @@ export default function DemoUseIsThisWeek() {
       <div className="demo-info-card">
         <div className="demo-description">
           <strong>Description:</strong>
-          <span>useIsThisWeek checks if a Temporal date/time is in the current calendar week.</span>
+          <span>Returns true if the provided date is within the current week (ISO week).</span>
         </div>
         <div className="demo-usage">
-          <strong>Usage:</strong>
-          <span>const isThisWeek = useIsThisWeek(date);</span>
+          <span>
+            <strong>Syntax:</strong> useIsThisWeek(dateTime)<br/>
+            <strong>Parameters:</strong><br/>
+            - dateTime: A Temporal date/time object (PlainDateTime, ZonedDateTime, or Instant)<br/>
+            <strong>Returns:</strong> A boolean indicating whether the provided date is within the current week (ISO week)<br/>
+            <strong>Example:</strong>
+              <code>
+                import &#123; useIsThisWeek, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+                <br/>
+                // Get the current date/time
+                const now = useCurrentDateTime();<br/>
+                // Create a date/time to check
+                const dateTime = now; // or any other Temporal date/time<br/>
+                const isThisWeek = useIsThisWeek(dateTime);<br/>
+                // Returns true if dateTime is in the current week, false otherwise
+              </code>
+          </span>
         </div>
       </div>
     </section>

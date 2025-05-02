@@ -27,11 +27,24 @@ export default function DemoUseDuration() {
       <div className="demo-info-card">
         <div className="demo-description">
           <strong>Description:</strong>
-          <span>useDuration helps create, manipulate, and format Temporal.Duration objects.</span>
+          <span>The useDuration hook provides utilities for working with durations using the Temporal API. This hook allows users to create durations, perform operations like adding or subtracting them from date-times, and format durations in a human-readable string.</span>
         </div>
         <div className="demo-usage">
-          <strong>Usage:</strong>
-          <span>const &#123; createDuration, addDuration, subtractDuration, formatDuration &#125; = useDuration();</span>
+          <span>
+            <strong>Syntax:</strong> useDuration()<br/>
+            <strong>Returns:</strong> Object with utility functions:<br/>
+            - createDuration(obj): Creates a Temporal.Duration<br/>
+            - addDuration(date, duration): Adds a duration to a date<br/>
+            - subtractDuration(date, duration): Subtracts a duration from a date<br/>
+            - formatDuration(duration): Formats a duration as a string<br/>
+            <strong>Example:</strong>
+              <code>
+                import &#123; useDuration, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+                <br/>
+                const &#123; createDuration, addDuration, subtractDuration, formatDuration &#125; = useDuration();<br/>
+                const duration = createDuration(&#123; hours: 1, minutes: 30 &#125;);
+              </code>
+          </span>
         </div>
       </div>
     </section>

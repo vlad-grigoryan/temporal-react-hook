@@ -59,7 +59,6 @@ const Playground: FC = () => {
   return (
       <div style={{ display: "flex", width: "100vw", height: "100vh", fontFamily: 'Inter, sans-serif' }}>
         <aside style={{
-          width: "14rem", 
           background: '#23272f',
           color: '#fff',
           padding: 0,
@@ -80,7 +79,7 @@ const Playground: FC = () => {
           </div>
           <nav 
             ref={navRef}
-            style={{ flex: 1, overflowY: "auto", maxHeight: "calc(100vh - 8.5rem)", position: 'relative', display: 'flex', flexDirection: 'column' }}>
+            style={{ flex: 1, overflowY: "auto", position: 'relative', display: 'flex', flexDirection: 'column' }}>
             <div style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column' }}>
               {showUpArrow && (
                 <div style={{

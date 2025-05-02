@@ -1,15 +1,25 @@
 {
   "name": "temporal-react-hook",
-  "version": "1.5.1",
-  "description": "",
+  "version": "1.5.3",
+  "description": "A React library that provides hooks for handling date and time operations using the Temporal API",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "prepare": "npm run build"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "react",
+    "hooks",
+    "temporal",
+    "datetime",
+    "date",
+    "time",
+    "timezone",
+    "duration",
+    "formatting"
+  ],
+  "author": "Vlad Grigoryan",
   "license": "ISC",
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",

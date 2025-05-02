@@ -12,6 +12,7 @@
 #### [useRelativeTime](#userelativetime-hook)
 #### [useLocaleDateTime](#uselocaledatetime-hook)
 #### [useTimeAgo](#usetimeago-hook)
+#### [useIsSame](#useissame-hook)
 #### [useIsToday](#useistoday-hook)
 #### [useIsThisWeek](#useisthisweek-hook)
 #### [useIsThisMonth](#useisthismonth-hook)
@@ -36,15 +37,15 @@
 
 #### Example Usage:
 
-```jsx
+```bash
 npm install temporal-react-hook
 ```
 
 ```jsx
 import React from 'react';
-import { useCurrentDateTime } from 'your-package-name';
+import { useCurrentDateTime } from 'temporal-react-hook';
 
-const App: React.FC = () => {
+const App = () => {
   const now = useCurrentDateTime();
 
   return (
@@ -78,15 +79,15 @@ export default App;
 
 ### Example Usage
 
-```jsx
+```bash
 npm install temporal-react-hook
 ```
 
 ```jsx
 import React from 'react';
-import { useCurrentDateTime, useTimeZone } from 'your-package-name';
+import { useCurrentDateTime, useTimeZone } from 'temporal-react-hook';
 
-const App: React.FC = () => {
+const App = () => {
     const now = useCurrentDateTime();
     const { timeZone, convertToTimeZone } = useTimeZone();
 
@@ -118,15 +119,15 @@ const App: React.FC = () => {
 
 ### Example Usage
 
-```jsx
+```bash
 npm install temporal-react-hook
 ```
 
 ```jsx
 import React from 'react';
-import { useCurrentDateTime, useTimeZone, useDuration } from 'react-temporal-hooks';
+import { useCurrentDateTime, useTimeZone, useDuration } from 'temporal-react-hook';
 
-const App: React.FC = () => {
+const App = () => {
     const now = useCurrentDateTime();
     const { timeZone, convertToTimeZone } = useTimeZone();
     const { createDuration, addDuration, subtractDuration, formatDuration } = useDuration();
@@ -171,9 +172,11 @@ This hook is great for chat apps, notifications, activity feeds, or anywhere you
 
 **Example Usage:**
 ```tsx
-import { useRelativeTime } from 'your-package-name';
+import { useRelativeTime, useCurrentDateTime } from 'temporal-react-hook';
 
-const messageTime = Temporal.Now.plainDateTimeISO().subtract({ minutes: 3 });
+// Using current time minus 3 minutes
+const now = useCurrentDateTime();
+const messageTime = now.subtract({ minutes: 3 });
 const relative = useRelativeTime(messageTime);
 // Output: "3 minutes ago"
 ```
@@ -189,12 +192,12 @@ const relative = useRelativeTime(messageTime);
 #### Example Usage:
 
 ```tsx
-import { useLocaleDateTime } from 'temporal-react-hook';
-import { Temporal } from '@js-temporal/polyfill';
+import { useLocaleDateTime, useCurrentDateTime } from 'temporal-react-hook';
 
-const dateTime = Temporal.Now.plainDateTimeISO();
-const formatted = useLocaleDateTime(dateTime, 'fr-FR', { dateStyle: 'full', timeStyle: 'short' });
-// formatted: "mercredi 23 avril 2025 à 19:48"
+// Get current date with locale formatting 
+const now = useCurrentDateTime();
+const formattedDate = useLocaleDateTime(now, 'en-US');
+// Output: "5/2/2025, 8:59 AM" (based on user's locale)
 ```
 
 #### Use Cases:
@@ -215,12 +218,13 @@ const formatted = useLocaleDateTime(dateTime, 'fr-FR', { dateStyle: 'full', time
 #### Example Usage:
 
 ```tsx
-import { useTimeAgo } from 'temporal-react-hook';
-import { Temporal } from '@js-temporal/polyfill';
+import { useTimeAgo, useCurrentDateTime } from 'temporal-react-hook';
 
-const dateTime = Temporal.Now.plainDateTimeISO().subtract({ hours: 2 });
-const timeAgo = useTimeAgo(dateTime);
-// timeAgo: "2 hours ago"
+// Get time ago for current time minus 2 days
+const now = useCurrentDateTime();
+const twoDaysAgo = now.subtract({ days: 2 });
+const timeAgo = useTimeAgo(twoDaysAgo);
+// Output: "2 days ago"
 ```
 
 #### Use Cases:
@@ -229,6 +233,33 @@ const timeAgo = useTimeAgo(dateTime);
 - **Audit logs:** Human-readable timestamps for events.
 - **Real-time dashboards:** Auto-updating event recency.
 - **Chat apps:** Indicate when a message was sent.
+
+---
+
+### `useIsSame hook`
+<p>The <b>useIsSame</b> hook compares two Temporal dates or times to determine if they are the same at the specified unit (year, month, week, day, hour, minute, second).</p>
+
+#### Features:
+- __Flexible Comparison:__ Compare dates at various granularity levels (year, month, day, etc.)
+- __Type Safety:__ Works with Temporal.PlainDateTime objects for safe comparison
+- __Easy to Use:__ Simple API with clear semantics
+
+#### Example Usage:
+```tsx
+import { useIsSame } from 'temporal-react-hook';
+
+const dateA = Temporal.PlainDateTime.from('2025-05-01T12:00');
+const dateB = Temporal.PlainDateTime.from('2025-05-01T14:30');
+
+const isSameDay = useIsSame(dateA, dateB, 'day'); // true
+const isSameHour = useIsSame(dateA, dateB, 'hour'); // false
+```
+
+#### Use Cases:
+- **Event scheduling:** Determine if events occur on the same day
+- **Date filtering:** Group data by matching time periods
+- **UI highlights:** Visually indicate when dates are in the same time unit
+- **Calendar apps:** Show items that occur in the same time frame
 
 ---
 
@@ -248,24 +279,13 @@ Returns `true` if the provided date is within the current year.
 
 #### Example Usage
 ```jsx
-import { useIsToday, useIsThisWeek, useIsThisMonth, useIsThisYear } from 'your-package-name';
-import { Temporal } from '@js-temporal/polyfill';
+import { useIsToday, useCurrentDateTime } from 'temporal-react-hook';
 
-const date = Temporal.Now.plainDateTimeISO();
-
-const isToday = useIsToday(date);
-const isThisWeek = useIsThisWeek(date);
-const isThisMonth = useIsThisMonth(date);
-const isThisYear = useIsThisYear(date);
-
-return (
-  <div>
-    <div>Is Today? {String(isToday)}</div>
-    <div>Is This Week? {String(isThisWeek)}</div>
-    <div>Is This Month? {String(isThisMonth)}</div>
-    <div>Is This Year? {String(isThisYear)}</div>
-  </div>
-);
+// Check if a date is today
+const now = useCurrentDateTime();
+const yesterday = now.subtract({ days: 1 });
+const isToday = useIsToday(now); // true
+const isYesterdayToday = useIsToday(yesterday); // false
 ```
 
 #### Use Cases:
@@ -295,7 +315,6 @@ const result = add(date, { days: 1, hours: 2 });
 **Example:**
 ```tsx
 import { useTemporalAdd } from 'temporal-react-hook';
-import { Temporal } from '@js-temporal/polyfill';
 
 const add = useTemporalAdd();
 const base = Temporal.PlainDateTime.from('2025-04-27T12:00');
@@ -325,7 +344,6 @@ const result = subtract(date, { months: 1 });
 **Example:**
 ```tsx
 import { useTemporalSubtract } from 'temporal-react-hook';
-import { Temporal } from '@js-temporal/polyfill';
 
 const subtract = useTemporalSubtract();
 const base = Temporal.PlainDateTime.from('2025-04-27T12:00');
@@ -354,12 +372,15 @@ const formatted = useTemporalFormat(date, options?, locale?)
 
 **Example Usage:**
 ```tsx
-import { useTemporalFormat } from 'temporal-react-hook';
-import { Temporal } from '@js-temporal/polyfill';
+import { useTemporalFormat, useCurrentDateTime } from 'temporal-react-hook';
 
-const date = Temporal.Now.plainDateTimeISO();
-const formatted = useTemporalFormat(date, 'long', 'fr-FR');
-// e.g., '28 avril 2025 à 00:36:00'
+// Format a date in different ways
+const now = useCurrentDateTime();
+const formatted = useTemporalFormat(now, 'yyyy-MM-dd');
+// Output: "2025-04-23"
+
+const customFormat = useTemporalFormat(now, 'EEEE, MMMM d, yyyy');
+// Output: "Wednesday, April 23, 2025"
 ```
 
 **Presets:**
@@ -394,13 +415,17 @@ const result = startOf(date, 'week');
 
 **Example Usage:**
 ```tsx
-import { useTemporalStartOf } from 'temporal-react-hook';
-import { Temporal } from '@js-temporal/polyfill';
+import { useTemporalStartOf, useCurrentDateTime } from 'temporal-react-hook';
 
 const startOf = useTemporalStartOf();
-const now = Temporal.Now.plainDateTimeISO();
-const weekStart = startOf(now, 'week');
-// weekStart is the start of the current ISO week
+const now = useCurrentDateTime();
+const startOfDay = startOf(now, 'day');
+const startOfMonth = startOf(now, 'month');
+const startOfYear = startOf(now, 'year');
+
+// startOfDay: 2023-11-09T00:00:00
+// startOfMonth: 2023-11-01T00:00:00
+// startOfYear: 2023-01-01T00:00:00
 ```
 
 ---
@@ -424,13 +449,17 @@ const result = endOf(date, 'month');
 
 **Example Usage:**
 ```tsx
-import { useTemporalEndOf } from 'temporal-react-hook';
-import { Temporal } from '@js-temporal/polyfill';
+import { useTemporalEndOf, useCurrentDateTime } from 'temporal-react-hook';
 
-const endOf = useTemporalEndOf();
-const now = Temporal.Now.plainDateTimeISO();
-const monthEnd = endOf(now, 'month');
-// monthEnd is the last moment of the current month
+// Get end of various time units
+const now = useCurrentDateTime();
+const endOfDay = useTemporalEndOf(now, 'day');
+const endOfMonth = useTemporalEndOf(now, 'month');
+const endOfYear = useTemporalEndOf(now, 'year');
+
+// endOfDay: 2023-11-09T23:59:59.999999999
+// endOfMonth: 2023-11-30T23:59:59.999999999
+// endOfYear: 2023-12-31T23:59:59.999999999
 ```
 
 **Use Cases:**
