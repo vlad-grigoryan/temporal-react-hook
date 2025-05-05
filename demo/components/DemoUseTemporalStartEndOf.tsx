@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import useTemporalStartOf, { StartOfUnit } from '../../src/useTemporalStartOf';
 import useTemporalEndOf from '../../src/useTemporalEndOf';
-import useCurrentDateTime from '../../src/useCurrentDateTime';
+import useTemporalDateTime from '../../src/useTemporalDateTime';
 
 export default function DemoUseTemporalStartEndOf() {
   const startOf = useTemporalStartOf();
   const endOf = useTemporalEndOf();
-  const currentDateTime = useCurrentDateTime();
+  const currentDateTime = useTemporalDateTime();
   const [datetime, setDatetime] = useState(currentDateTime);
   const [unit, setUnit] = useState<StartOfUnit>('day');
 
@@ -18,16 +18,16 @@ export default function DemoUseTemporalStartEndOf() {
       <h3>useTemporalStartOf / useTemporalEndOf</h3>
       <div className="demo-row">
         <b>Base Date:</b> <span className="demo-value">{datetime.toString()}</span>
-        <button style={{ marginLeft: 8 }} onClick={() => setDatetime(useCurrentDateTime())}>Now</button>
-        <button style={{ marginLeft: 8 }} onClick={() => setDatetime(datetime.add({ days: 1 }))}>+1 day</button>
-        <button style={{ marginLeft: 8 }} onClick={() => setDatetime(datetime.subtract({ days: 1 }))}>-1 day</button>
+        <button className="demo-btn-margin" onClick={() => setDatetime(currentDateTime)}>Now</button>
+        <button className="demo-btn-margin" onClick={() => setDatetime(datetime.add({ days: 1 }))}>+1 day</button>
+        <button className="demo-btn-margin" onClick={() => setDatetime(datetime.subtract({ days: 1 }))}>-1 day</button>
       </div>
       <div className="demo-row">
         <b>Unit:</b>
         {['year', 'month', 'week', 'day', 'hour', 'minute', 'second'].map(unit => (
           <button
             key={unit}
-            style={{ marginLeft: 8, fontWeight: unit === unit ? 'bold' : 'normal' }}
+            className={`demo-btn-margin${unit === unit ? ' demo-btn-bold' : ''}`}
             onClick={() => setUnit(unit as StartOfUnit)}
           >
             {unit}
@@ -54,11 +54,11 @@ export default function DemoUseTemporalStartEndOf() {
             - unit: Unit for calculation ('year', 'month', 'week', 'day', 'hour', 'minute', 'second')<br/>
             <strong>Example:</strong>
             <code>
-              import &#123; useTemporalStartOf, useTemporalEndOf, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              import &#123; useTemporalStartOf, useTemporalEndOf, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
               <br/>
               const startOf = useTemporalStartOf();<br/>
               const endOf = useTemporalEndOf();<br/>
-              const now = useCurrentDateTime();<br/>
+              const now = useTemporalDateTime();<br/>
               <br/>
               // Get start of month<br/>
               const startOfMonth = startOf(now, 'month');<br/>

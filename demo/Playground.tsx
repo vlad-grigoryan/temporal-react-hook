@@ -14,8 +14,11 @@ import DemoUseTemporalAdd from "./components/DemoUseTemporalAdd";
 import DemoUseTemporalSubtract from "./components/DemoUseTemporalSubtract";
 import DemoUseTemporalStartEndOf from "./components/DemoUseTemporalStartEndOf";
 import DemoUseIsSame from "./components/DemoUseIsSame";
+import DemoUseCalendarTime from "./components/DemoUseCalendarTime";
+import DemoUseTemporalDateTime from "./components/DemoUseTemporalDateTime";
 
 const demoSections = [
+  { key: "temporaldatetime", label: "useTemporalDateTime", component: <DemoUseTemporalDateTime /> },
   { key: "currentdatetime", label: "useCurrentDateTime", component: <DemoUseCurrentDateTime /> },
   { key: "timezone", label: "useTimeZone", component: <DemoUseTimeZone /> },
   { key: "duration", label: "useDuration", component: <DemoUseDuration /> },
@@ -31,6 +34,7 @@ const demoSections = [
   { key: "add", label: "useTemporalAdd", component: <DemoUseTemporalAdd /> },
   { key: "subtract", label: "useTemporalSubtract", component: <DemoUseTemporalSubtract /> },
   { key: "startendof", label: "useTemporalStartOf / EndOf", component: <DemoUseTemporalStartEndOf /> },
+  { key: "calendartime", label: "useCalendarTime", component: <DemoUseCalendarTime /> },
 ];
 
 const Playground: FC = () => {
@@ -57,106 +61,48 @@ const Playground: FC = () => {
   }, []);
 
   return (
-      <div style={{ display: "flex", width: "100vw", height: "100vh", fontFamily: 'Inter, sans-serif' }}>
-        <aside style={{
-          background: '#23272f',
-          color: '#fff',
-          padding: 0,
-          boxShadow: '0.125rem 0 0.5rem #0001', 
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
-          <div style={{
-            fontWeight: 700,
-            fontSize: "1.375rem", 
-            padding: "1.375rem 0 0.75rem 0", 
-            letterSpacing: 1,
-            borderBottom: '1px solid #333',
-            textAlign: 'center'
-          }}>
-            <span role="img" aria-label="clock" style={{ marginRight: "0.5rem" }}>⏰</span>
-            Temporal React Hooks
-          </div>
-          <nav 
-            ref={navRef}
-            style={{ flex: 1, overflowY: "auto", position: 'relative', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column' }}>
-              {showUpArrow && (
-                <div style={{
-                  position: 'sticky',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  background: 'linear-gradient(to bottom, #23272f 80%, transparent)',
-                  zIndex: 2,
-                  textAlign: 'center',
-                  pointerEvents: 'none',
-                  fontSize: '1.25rem',
-                  color: '#aaa',
-                  height: '2rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>▲</div>
-              )}
-              <div style={{ position: 'relative', zIndex: 1 }}>
-                {demoSections.map(section => (
-                  <div
-                    key={section.key}
-                    onClick={() => setSelected(section.key)}
-                    onMouseEnter={() => setHovered(section.key)}
-                    onMouseLeave={() => setHovered(null)}
-                    style={{
-                      padding: "0.75rem 0.75rem", 
-                      background: selected === section.key ? '#3c4250' : hovered === section.key ? '#353b48' : 'none',
-                      cursor: 'pointer',
-                      fontWeight: selected === section.key ? 600 : 400,
-                      borderLeft: selected === section.key ? '0.25rem solid #2bd4c5' : '0.25rem solid transparent', 
-                      color: selected === section.key || hovered === section.key ? '#fff' : '#c0c4cc',
-                      transition: 'background 0.2s, border-left 0.2s, color 0.2s',
-                      display: 'block',
-                    }}
-                  >
-                    {section.label}
-                  </div>
-                ))}
-              </div>
-              {showDownArrow && (
-                <div style={{
-                  position: 'sticky',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  background: 'linear-gradient(to top, #23272f 80%, transparent)',
-                  zIndex: 2,
-                  textAlign: 'center',
-                  pointerEvents: 'none',
-                  fontSize: '1.25rem',
-                  color: '#aaa',
-                  height: '2rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>▼</div>
-              )}
+    <div className="playground-root">
+      <aside className="playground-sidebar">
+        <div className="playground-sidebar-header">
+          <span role="img" aria-label="clock" className="playground-sidebar-icon">⏰</span>
+          Temporal React Hooks
+        </div>
+        <nav
+          ref={navRef}
+          className="playground-sidebar-nav"
+        >
+          <div className="playground-sidebar-nav-inner">
+            {showUpArrow && (
+              <div className="playground-nav-arrow playground-nav-arrow-up">▲</div>
+            )}
+            <div className="playground-nav-items">
+              {demoSections.map(section => (
+                <div
+                  key={section.key}
+                  onClick={() => setSelected(section.key)}
+                  onMouseEnter={() => setHovered(section.key)}
+                  onMouseLeave={() => setHovered(null)}
+                  className={`playground-nav-item${selected === section.key ? ' selected' : ''}${hovered === section.key ? ' hovered' : ''}`}
+                >
+                  {section.label}
+                </div>
+              ))}
             </div>
-          </nav>
-          <div style={{
-            padding: "1rem 1.5rem", 
-            fontSize: "0.75rem", 
-            color: "#aaa",
-            borderTop: "1px solid #333",
-            textAlign: "center"
-          }}>
-            {new Date().getFullYear()} temporal-react-hook
+            {showDownArrow && (
+              <div className="playground-nav-arrow playground-nav-arrow-down">▼</div>
+            )}
           </div>
-        </aside>
-        <main style={{ width: "100%"}}>
-          <div style={{display: 'flex', width: "100%", height: "100%" }}>
-            {demoSections.find(s => s.key === selected)?.component}
-          </div>
-        </main>
-      </div>
+        </nav>
+        <div className="playground-sidebar-footer">
+          {new Date().getFullYear()} temporal-react-hook
+        </div>
+      </aside>
+      <main className="playground-main">
+        <div className="playground-main-content">
+          {demoSections.find(s => s.key === selected)?.component}
+        </div>
+      </main>
+    </div>
   );
 };
 

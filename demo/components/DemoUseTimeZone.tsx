@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import "./DemoCard.css";
 import useTimeZone from "../../src/useTimeZone";
-import useCurrentDateTime from "../../src/useCurrentDateTime";
 import useTemporalFormat from "../../src/useTemporalFormat";
 import { Temporal } from "@js-temporal/polyfill";
+import useTemporalDateTime from "../../src/useTemporalDateTime.ts";
 
 // Common time zones for easy selection
 const commonTimeZones = [
@@ -32,7 +32,7 @@ const isValidTimeZone = (timeZone: string): boolean => {
 
 export default function DemoUseTimeZone() {
   const { timeZone, convertToTimeZone } = useTimeZone();
-  const now = useCurrentDateTime();
+  const now = useTemporalDateTime();
   const [targetZone, setTargetZone] = useState("Europe/London");
   const [customZone, setCustomZone] = useState("");
   const [error, setError] = useState("");
@@ -131,15 +131,15 @@ export default function DemoUseTimeZone() {
             value={customZone}
             onChange={handleCustomZoneChange}
             placeholder="Enter IANA Time Zone (e.g., Asia/Kolkata)"
-            style={{ borderColor: error ? '#ff6b6b' : undefined }}
+            className={error ? "demo-error-border" : undefined}
           />
-          <button onClick={applyCustomZone} style={{ marginLeft: 8 }}>Apply</button>
+          <button onClick={applyCustomZone} className="demo-btn-margin">Apply</button>
         </div>
       )}
       
       <div className="demo-row">
         <b>Converted Time:</b> 
-        <span className="demo-value" style={{ color: error ? '#ff6b6b' : undefined }}>
+        <span className={error ? "demo-value demo-error-color" : "demo-value"}>
           {error || (convertedDateTime ? `${formatDateTime(convertedDateTime)} (${targetZone})` : '')}
         </span>
       </div>
@@ -167,11 +167,11 @@ export default function DemoUseTimeZone() {
             - convertToTimeZone: A function to convert a Temporal datetime to a different time zone<br/>
             <strong>Example:</strong>
               <code>
-                import &#123; useTimeZone, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+                import &#123; useTimeZone, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
                 <br/>
                 // Get the current time zone and converter function<br/>
                 const &#123; timeZone, convertToTimeZone &#125; = useTimeZone();<br/>
-                const now = useCurrentDateTime();<br/>
+                const now = useTemporalDateTime();<br/>
                 <br/>
                 // Convert current datetime to London time<br/>
                 const londonTime = convertToTimeZone(now, "Europe/London");<br/>

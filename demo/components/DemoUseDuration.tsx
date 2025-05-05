@@ -1,11 +1,11 @@
 import { useState } from "react";
 import "./DemoCard.css";
 import useDuration from "../../src/useDuration";
-import useCurrentDateTime from "../../src/useCurrentDateTime";
+import useTemporalDateTime from "../../src/useTemporalDateTime";
 
 export default function DemoUseDuration() {
   const { createDuration, addDuration, subtractDuration, formatDuration } = useDuration();
-  const now = useCurrentDateTime();
+  const now = useTemporalDateTime();
   const [duration] = useState(() => createDuration({ hours: 1, minutes: 30 }));
   const added = addDuration(now, duration);
   const subtracted = subtractDuration(now, duration);
@@ -39,9 +39,10 @@ export default function DemoUseDuration() {
             - formatDuration(duration): Formats a duration as a string<br/>
             <strong>Example:</strong>
               <code>
-                import &#123; useDuration, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+                import &#123; useDuration, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
                 <br/>
                 const &#123; createDuration, addDuration, subtractDuration, formatDuration &#125; = useDuration();<br/>
+                const now = useTemporalDateTime();<br/>
                 const duration = createDuration(&#123; hours: 1, minutes: 30 &#125;);
               </code>
           </span>

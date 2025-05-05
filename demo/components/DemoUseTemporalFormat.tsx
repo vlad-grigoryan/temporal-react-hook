@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useTemporalFormat from '../../src/useTemporalFormat';
-import useCurrentDateTime from '../../src/useCurrentDateTime';
+import useTemporalDateTime from '../../src/useTemporalDateTime';
 import './DemoCard.css';
 
 // Define preset options as allowed by the hook
@@ -13,7 +13,7 @@ const localeOptions = [
 ];
 
 export default function DemoUseTemporalFormat() {
-  const currentDateTime = useCurrentDateTime();
+  const currentDateTime = useTemporalDateTime();
   const [date, setDate] = useState(currentDateTime);
   const [formatPreset, setFormatPreset] = useState<'short' | 'medium' | 'long' | 'full'>('medium');
   const [locale, setLocale] = useState('en-US');
@@ -27,7 +27,7 @@ export default function DemoUseTemporalFormat() {
       <div className="demo-row">
         <b>Date to Format:</b>
         <span className="demo-value">{date.toString()}</span>
-        <button onClick={() => setDate(useCurrentDateTime())}>Now</button>
+        <button onClick={() => setDate(currentDateTime)}>Now</button>
         <button onClick={() => setDate(date.add({ days: 1 }))}>+1 day</button>
         <button onClick={() => setDate(date.subtract({ days: 1 }))}>-1 day</button>
       </div>
@@ -74,9 +74,9 @@ export default function DemoUseTemporalFormat() {
             <strong>Returns:</strong> Formatted date/time string<br/>
             <strong>Example:</strong>
             <code>
-              import &#123; useTemporalFormat, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              import &#123; useTemporalFormat, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
               <br/>
-              const now = useCurrentDateTime();<br/>
+              const now = useTemporalDateTime();<br/>
               const formattedDate = useTemporalFormat(now, 'long', 'fr-FR');<br/>
               // Returns date in French long format: '2 mai 2023 à 14:30:00'
             </code>

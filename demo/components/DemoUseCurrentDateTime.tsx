@@ -1,12 +1,12 @@
 import "./DemoCard.css";
 import useCurrentDateTime from "../../src/useCurrentDateTime";
 
-export default function DemoUseCurrentDateTime() {
+export default function DemoUseTemporalDateTime() {
   const now = useCurrentDateTime();
 
   return (
     <section className="demo-card">
-      <h3>useCurrentDateTime</h3>
+      <h3>useTemporalDateTime</h3>
       <div className="demo-row">
         <b>Current DateTime:</b>
         <span className="demo-value">{now.toString()}</span>
@@ -14,7 +14,7 @@ export default function DemoUseCurrentDateTime() {
       <div className="demo-info-card">
         <div className="demo-description">
           <strong>Description:</strong>
-          <span>The useCurrentDateTime hook provides the current date and time using the Temporal API. It automatically updates the date and time every second, ensuring that the component using this hook always displays the most recent time.</span>
+          <span>The useTemporalDateTime hook provides the current date and time using the Temporal API. It automatically updates the date and time every second, ensuring that the component using this hook always displays the most recent time.</span>
         </div>
         <div className="demo-usage">
           <span>

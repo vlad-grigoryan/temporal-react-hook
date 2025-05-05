@@ -1,9 +1,9 @@
 import { useState } from "react";
 import useTemporalSubtract from "../../src/useTemporalSubtract";
-import useCurrentDateTime from "../../src/useCurrentDateTime";
+import useTemporalDateTime from "../../src/useTemporalDateTime";
 
 export default function DemoUseTemporalSubtract() {
-  const currentDateTime = useCurrentDateTime();
+  const currentDateTime = useTemporalDateTime();
   const [baseDate, setBaseDate] = useState(currentDateTime);
   const [amount, setAmount] = useState({ days: 1 });
   const subtract = useTemporalSubtract();
@@ -14,7 +14,7 @@ export default function DemoUseTemporalSubtract() {
       <h3>useTemporalSubtract</h3>
       <div className="demo-row">
         <b>Base Date:</b> <span className="demo-value">{baseDate.toString()}</span>
-        <button style={{ marginLeft: 8 }} onClick={() => setBaseDate(useCurrentDateTime())}>Now</button>
+        <button className="demo-select-btn" onClick={() => setBaseDate(currentDateTime)}>Now</button>
       </div>
       <div className="demo-row">
         <b>Days to Subtract:</b>
@@ -23,7 +23,7 @@ export default function DemoUseTemporalSubtract() {
           min={0}
           value={amount.days}
           onChange={e => setAmount({ days: Math.max(0, Number(e.target.value)) })}
-          style={{ marginLeft: 8, width: 60 }}
+          className="demo-input-compact"
         />
       </div>
       <div className="demo-row">
@@ -43,10 +43,10 @@ export default function DemoUseTemporalSubtract() {
             <strong>Returns:</strong> Temporal.PlainDateTime — The new date/time after subtraction<br/>
             <strong>Example:</strong><br/>
             <code>
-              import &#123; useTemporalSubtract, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              import &#123; useTemporalSubtract, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
               <br/>
               const subtract = useTemporalSubtract();<br/>
-              const now = useCurrentDateTime();<br/>
+              const now = useTemporalDateTime();<br/>
               const yesterday = subtract(now, &#123; days: 1 &#125;);<br/>
               // yesterday is now minus one day<br/>
             </code>

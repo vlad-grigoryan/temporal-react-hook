@@ -1,9 +1,9 @@
 import { useState } from "react";
 import useTemporalAdd from "../../src/useTemporalAdd";
-import useCurrentDateTime from "../../src/useCurrentDateTime";
+import useTemporalDateTime from "../../src/useTemporalDateTime";
 
 export default function DemoUseTemporalAdd() {
-  const currentDateTime = useCurrentDateTime();
+  const currentDateTime = useTemporalDateTime();
   const [baseDate, setBaseDate] = useState(currentDateTime);
   const [amount, setAmount] = useState({ days: 1 });
   const add = useTemporalAdd();
@@ -14,7 +14,7 @@ export default function DemoUseTemporalAdd() {
       <h3>useTemporalAdd</h3>
       <div className="demo-row">
         <b>Base Date:</b> <span className="demo-value">{baseDate.toString()}</span>
-        <button style={{ marginLeft: 8 }} onClick={() => setBaseDate(useCurrentDateTime())}>Now</button>
+        <button className="demo-select-btn" onClick={() => setBaseDate(currentDateTime)}>Now</button>
       </div>
       <div className="demo-row">
         <b>Days to Add:</b>
@@ -23,7 +23,7 @@ export default function DemoUseTemporalAdd() {
           min={0}
           value={amount.days}
           onChange={e => setAmount({ days: Math.max(0, Number(e.target.value)) })}
-          style={{ marginLeft: 8, width: 60 }}
+          className="demo-input-compact"
         />
       </div>
       <div className="demo-row">
@@ -43,10 +43,10 @@ export default function DemoUseTemporalAdd() {
             <strong>Returns:</strong> Temporal.PlainDateTime — The new date/time after addition<br/>
             <strong>Example:</strong><br/>
             <code>
-              import &#123; useTemporalAdd, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              import &#123; useTemporalAdd, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
               <br/>
               const add = useTemporalAdd();<br/>
-              const now = useCurrentDateTime();<br/>
+              const now = useTemporalDateTime();<br/>
               const tomorrow = add(now, &#123; days: 1 &#125;);<br/>
               // tomorrow is now plus one day<br/>
             </code>

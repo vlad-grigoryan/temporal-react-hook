@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "./DemoCard.css";
 import useTimeAgo from "../../src/useTimeAgo";
-import useCurrentDateTime from "../../src/useCurrentDateTime";
+import useTemporalDateTime from "../../src/useTemporalDateTime";
 
 export default function DemoUseTimeAgo() {
-  const now = useCurrentDateTime();
+  const now = useTemporalDateTime();
+  console.log(now)
   const [base] = useState(() => now.subtract({ minutes: 5 }));
   const timeAgo = useTimeAgo(base);
   return (
@@ -30,10 +31,10 @@ export default function DemoUseTimeAgo() {
             <strong>Returns:</strong> A string representing the relative time (e.g., "5 minutes ago")<br/>
             <strong>Example:</strong>
               <code>
-                import &#123; useTimeAgo, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+                import &#123; useTimeAgo, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
                 <br/>
                 // Get current time
-                const now = useCurrentDateTime();<br/>
+                const now = useTemporalDateTime();<br/>
                 <br/>
                 // Create a time in the past
                 const pastTime = now.subtract(&#123; hours: 2 &#125;);<br/>

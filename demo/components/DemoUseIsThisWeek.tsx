@@ -1,9 +1,9 @@
 import { useState } from "react";
 import useIsThisWeek from "../../src/useIsThisWeek";
-import useCurrentDateTime from "../../src/useCurrentDateTime";
+import useTemporalDateTime from "../../src/useTemporalDateTime";
 
 export default function DemoUseIsThisWeek() {
-  const now = useCurrentDateTime();
+  const now = useTemporalDateTime();
   const today = now.toPlainDate();
   const [date, setDate] = useState(today);
   // Convert PlainDate to PlainDateTime at midnight for compatibility
@@ -24,8 +24,7 @@ export default function DemoUseIsThisWeek() {
         {dates.map((d, i) => (
           <button
             key={i}
-            className={d.equals(date) ? "active" : ""}
-            style={{ marginLeft: 8, padding: '0.4rem 1rem', borderRadius: '0.5rem', border: d.equals(date) ? '2px solid #2bd4c5' : '1px solid #e0e3ea', background: d.equals(date) ? '#e6fcfa' : '#fff', color: '#23272f', fontWeight: 500, cursor: 'pointer' }}
+            className={`demo-select-btn${d.equals(date) ? " active" : ""}`}
             onClick={() => setDate(d)}
           >
             {d.toString()}
@@ -48,10 +47,10 @@ export default function DemoUseIsThisWeek() {
             <strong>Returns:</strong> A boolean indicating whether the provided date is within the current week (ISO week)<br/>
             <strong>Example:</strong>
               <code>
-                import &#123; useIsThisWeek, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+                import &#123; useIsThisWeek, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
                 <br/>
                 // Get the current date/time
-                const now = useCurrentDateTime();<br/>
+                const now = useTemporalDateTime();<br/>
                 // Create a date/time to check
                 const dateTime = now; // or any other Temporal date/time<br/>
                 const isThisWeek = useIsThisWeek(dateTime);<br/>

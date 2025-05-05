@@ -1,59 +1,11 @@
 import { useState, useEffect } from "react";
 import "./DemoCard.css";
 import useRelativeTime from "../../src/useRelativeTime";
-import useCurrentDateTime from "../../src/useCurrentDateTime";
-
-// Add a custom stylesheet for the component
-const styles = {
-  demoControls: {
-    marginBottom: "20px",
-    padding: "10px",
-    backgroundColor: "#f5f5f5",
-    borderRadius: "4px",
-  },
-  formatSelector: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-  },
-  formatSelect: {
-    padding: "5px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-  },
-  demoTimesGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-    gap: "15px",
-    marginBottom: "20px",
-  },
-  demoTimeItem: {
-    backgroundColor: "#f9f9f9",
-    border: "1px solid #eee",
-    borderRadius: "4px",
-    padding: "10px",
-  },
-  timeLabel: {
-    fontWeight: "bold",
-    marginBottom: "5px",
-  },
-  timeValue: {
-    color: "#0066cc",
-    fontSize: "1.2em",
-    marginBottom: "5px",
-  },
-  timeActual: {
-    fontSize: "0.8em",
-    color: "#666",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  }
-};
+import useTemporalDateTime from "../../src/useTemporalDateTime.ts";
 
 export default function DemoUseRelativeTime() {
   // Use our hook to get the current date and time 
-  const now = useCurrentDateTime();
+  const now = useTemporalDateTime();
   
   // Create a selection of dates at different points in time
   const [timePoints, setTimePoints] = useState(() => ({
@@ -106,13 +58,13 @@ export default function DemoUseRelativeTime() {
     <section className="demo-card">
       <h3>useRelativeTime</h3>
       
-      <div style={styles.demoControls}>
-        <div style={styles.formatSelector}>
+      <div className="demo-controls">
+        <div className="format-selector">
           <label>Formatting Style: </label>
           <select 
             value={formatStyle} 
             onChange={(e) => setFormatStyle(e.target.value as 'long' | 'short' | 'narrow')}
-            style={styles.formatSelect}
+            className="format-select"
           >
             <option value="long">Long (3 minutes ago)</option>
             <option value="short">Short (3 min ago)</option>
@@ -121,53 +73,53 @@ export default function DemoUseRelativeTime() {
         </div>
       </div>
       
-      <div style={styles.demoTimesGrid}>
-        <div style={styles.demoTimeItem}>
-          <div style={styles.timeLabel}>Just Now:</div>
-          <div style={styles.timeValue}>{formattedTimes.justNow}</div>
-          <div style={styles.timeActual}>{timePoints.justNow.toString()}</div>
+      <div className="demo-times-grid">
+        <div className="demo-time-item">
+          <div className="time-label">Just Now:</div>
+          <div className="time-value">{formattedTimes.justNow}</div>
+          <div className="time-actual">{timePoints.justNow.toString()}</div>
         </div>
         
-        <div style={styles.demoTimeItem}>
-          <div style={styles.timeLabel}>Minutes:</div>
-          <div style={styles.timeValue}>{formattedTimes.minutes}</div>
-          <div style={styles.timeActual}>{timePoints.minutes.toString()}</div>
+        <div className="demo-time-item">
+          <div className="time-label">Minutes:</div>
+          <div className="time-value">{formattedTimes.minutes}</div>
+          <div className="time-actual">{timePoints.minutes.toString()}</div>
         </div>
         
-        <div style={styles.demoTimeItem}>
-          <div style={styles.timeLabel}>Hours:</div>
-          <div style={styles.timeValue}>{formattedTimes.hours}</div>
-          <div style={styles.timeActual}>{timePoints.hours.toString()}</div>
+        <div className="demo-time-item">
+          <div className="time-label">Hours:</div>
+          <div className="time-value">{formattedTimes.hours}</div>
+          <div className="time-actual">{timePoints.hours.toString()}</div>
         </div>
         
-        <div style={styles.demoTimeItem}>
-          <div style={styles.timeLabel}>Days:</div>
-          <div style={styles.timeValue}>{formattedTimes.days}</div>
-          <div style={styles.timeActual}>{timePoints.days.toString()}</div>
+        <div className="demo-time-item">
+          <div className="time-label">Days:</div>
+          <div className="time-value">{formattedTimes.days}</div>
+          <div className="time-actual">{timePoints.days.toString()}</div>
         </div>
         
-        <div style={styles.demoTimeItem}>
-          <div style={styles.timeLabel}>Weeks:</div>
-          <div style={styles.timeValue}>{formattedTimes.weeks}</div>
-          <div style={styles.timeActual}>{timePoints.weeks.toString()}</div>
+        <div className="demo-time-item">
+          <div className="time-label">Weeks:</div>
+          <div className="time-value">{formattedTimes.weeks}</div>
+          <div className="time-actual">{timePoints.weeks.toString()}</div>
         </div>
         
-        <div style={styles.demoTimeItem}>
-          <div style={styles.timeLabel}>Months:</div>
-          <div style={styles.timeValue}>{formattedTimes.months}</div>
-          <div style={styles.timeActual}>{timePoints.months.toString()}</div>
+        <div className="demo-time-item">
+          <div className="time-label">Months:</div>
+          <div className="time-value">{formattedTimes.months}</div>
+          <div className="time-actual">{timePoints.months.toString()}</div>
         </div>
         
-        <div style={styles.demoTimeItem}>
-          <div style={styles.timeLabel}>Years:</div>
-          <div style={styles.timeValue}>{formattedTimes.years}</div>
-          <div style={styles.timeActual}>{timePoints.years.toString()}</div>
+        <div className="demo-time-item">
+          <div className="time-label">Years:</div>
+          <div className="time-value">{formattedTimes.years}</div>
+          <div className="time-actual">{timePoints.years.toString()}</div>
         </div>
         
-        <div style={styles.demoTimeItem}>
-          <div style={styles.timeLabel}>Future:</div>
-          <div style={styles.timeValue}>{formattedTimes.future}</div>
-          <div style={styles.timeActual}>{timePoints.future.toString()}</div>
+        <div className="demo-time-item">
+          <div className="time-label">Future:</div>
+          <div className="time-value">{formattedTimes.future}</div>
+          <div className="time-actual">{timePoints.future.toString()}</div>
         </div>
       </div>
       
@@ -191,10 +143,10 @@ export default function DemoUseRelativeTime() {
             <strong>Returns:</strong> A human-friendly string representing relative time<br/>
             <strong>Example:</strong>
             <code>
-              import &#123; useRelativeTime, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              import &#123; useRelativeTime, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
               <br/>
               // Basic usage<br/>
-              const now = useCurrentDateTime();<br/>
+              const now = useTemporalDateTime();<br/>
               const pastTime = now.subtract(&#123; hours: 3 &#125;);<br/>
               const relativeTime = useRelativeTime(pastTime);<br/><br/>
               // With options<br/>

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./DemoCard.css";
 import useLocaleDateTime from "../../src/useLocaleDateTime";
-import useCurrentDateTime from "../../src/useCurrentDateTime";
+import useTemporalDateTime from "../../src/useTemporalDateTime";
 
 export default function DemoUseLocaleDateTime() {
-  const now = useCurrentDateTime();
+  const now = useTemporalDateTime();
   const [locale, setLocale] = useState('fr-FR');
   const [dateStyle, setDateStyle] = useState<'full'|'long'|'medium'|'short'>('full');
   const [timeStyle, setTimeStyle] = useState<'full'|'long'|'medium'|'short'>('short');
@@ -52,10 +52,10 @@ export default function DemoUseLocaleDateTime() {
             <strong>Returns:</strong> A formatted string based on locale and options<br/>
             <strong>Example:</strong>
             <code>
-              import &#123; useLocaleDateTime, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              import &#123; useLocaleDateTime, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
               <br/>
               // Get the current date and time
-              const now = useCurrentDateTime();<br/>
+              const now = useTemporalDateTime();<br/>
               <br/>
               // Format with locale and options
               const formatted = useLocaleDateTime(now, 'en-US', &#123; dateStyle: 'full', timeStyle: 'short' &#125;);<br/>

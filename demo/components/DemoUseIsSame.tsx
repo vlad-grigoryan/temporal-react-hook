@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import useIsSame, { IsSameUnit } from '../../src/useIsSame';
-import useCurrentDateTime from '../../src/useCurrentDateTime';
 import { Temporal } from '@js-temporal/polyfill';
+import useTemporalDateTime from "../../src/useTemporalDateTime.ts";
 
 export default function DemoUseIsSame() {
-  const currentDateTime = useCurrentDateTime();
+  const currentDateTime = useTemporalDateTime();
   const [dateA, setDateA] = useState(currentDateTime);
   const [dateB, setDateB] = useState(() => currentDateTime.add({ days: 1 }));
   const [unit, setUnit] = useState<IsSameUnit>('day');
@@ -21,7 +21,7 @@ export default function DemoUseIsSame() {
             type="datetime-local"
             value={dateA.toString().slice(0, 16)}
             onChange={e => setDateA(Temporal.PlainDateTime.from(e.target.value))}
-            style={{ marginLeft: 8 }}
+            className="demo-input-compact demo-input-margin"
           />
         </label>
       </div>
@@ -32,14 +32,14 @@ export default function DemoUseIsSame() {
             type="datetime-local"
             value={dateB.toString().slice(0, 16)}
             onChange={e => setDateB(Temporal.PlainDateTime.from(e.target.value))}
-            style={{ marginLeft: 8 }}
+            className="demo-input-compact demo-input-margin"
           />
         </label>
       </div>
       <div className="demo-row">
         <label>
           Unit:
-          <select value={unit} onChange={e => setUnit(e.target.value as IsSameUnit)} style={{ marginLeft: 8 }}>
+          <select value={unit} onChange={e => setUnit(e.target.value as IsSameUnit)} className="demo-input-compact demo-input-margin">
             <option value="year">year</option>
             <option value="month">month</option>
             <option value="week">week</option>
@@ -68,9 +68,9 @@ export default function DemoUseIsSame() {
             <strong>Returns:</strong> Boolean indicating whether the two dates are the same in the specified unit<br/>
             <strong>Example:</strong>
             <code>
-              import &#123; useIsSame, useCurrentDateTime &#125; from 'temporal-react-hook';<br/>
+              import &#123; useIsSame, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
               <br/>
-              const now = useCurrentDateTime();<br/>
+              const now = useTemporalDateTime();<br/>
               const tomorrow = now.add(&#123; days: 1 &#125;);<br/>
               <br/>
               const isSameDay = useIsSame(now, tomorrow, 'day'); // false<br/>
