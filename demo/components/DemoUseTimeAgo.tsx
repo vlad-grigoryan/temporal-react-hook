@@ -1,49 +1,56 @@
-import { useState } from "react";
+import { useMemo } from "react";
+import { Temporal } from "@js-temporal/polyfill";
 import "./DemoCard.css";
 import useTimeAgo from "../../src/useTimeAgo";
 import useTemporalDateTime from "../../src/useTemporalDateTime";
 
 export default function DemoUseTimeAgo() {
   const now = useTemporalDateTime();
-  console.log(now)
-  const [base] = useState(() => now.subtract({ minutes: 5 }));
-  const timeAgo = useTimeAgo(base);
+  const samples = useMemo(() => [
+    { label: '30 seconds ago', date: now.subtract({ seconds: 30 }) },
+    { label: '5 minutes ago',  date: now.subtract({ minutes: 5 }) },
+    { label: '2 hours ago',    date: now.subtract({ hours: 2 }) },
+    { label: '1 day ago',       date: now.subtract({ days: 1 }) },
+    { label: '10 days ago',     date: now.subtract({ days: 10 }) },
+    { label: 'in 5 minutes',    date: now.add({ minutes: 5 }) },
+  ], [now]);
+
   return (
     <section className="demo-card">
       <h3>useTimeAgo</h3>
-      <div className="demo-row">
-        <b>Base Date:</b> <span className="demo-value">{base.toString()}</span>
-      </div>
-      <div className="demo-row">
-        <b>Time Ago:</b> <span className="demo-value">{timeAgo}</span>
+      <div className="demo-times-grid">
+        {samples.map(({ label, date }) => {
+          const isFuture = Temporal.PlainDateTime.compare(date, now) > 0;
+          const display = isFuture
+            ? date.toPlainDate().toString()
+            : useTimeAgo(date);
+          return (
+            <div key={label} className="demo-time-item">
+              <div className="time-label">{label}</div>
+              <div className="time-value">{display}</div>
+              <div className="time-actual">{date.toString()}</div>
+            </div>
+          );
+        })}
       </div>
       <div className="demo-info-card">
         <div className="demo-description">
           <strong>Description:</strong>
-          <span>The useTimeAgo hook returns a live-updating, human-friendly string representing how long ago a Temporal date/time occurred (e.g., "just now", "5 minutes ago", "2 days ago"). It supports Temporal.PlainDateTime, Temporal.ZonedDateTime, and Temporal.Instant.</span>
+          <span>
+            Renders a live-updating, human-friendly "time ago" string for past dates up to 7 days.
+            Dates older than 7 days and any future dates display as plain ISO dates (YYYY-MM-DD).
+          </span>
         </div>
         <div className="demo-usage">
-          <span>
-            <strong>Syntax:</strong> useTimeAgo(dateTime, options?)<br/>
-            <strong>Parameters:</strong><br/>
-            - dateTime: A Temporal date/time object (PlainDateTime, ZonedDateTime, or Instant)<br/>
-            - options?: Optional configuration object for customizing the display<br/>
-            <strong>Returns:</strong> A string representing the relative time (e.g., "5 minutes ago")<br/>
-            <strong>Example:</strong>
-              <code>
-                import &#123; useTimeAgo, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
-                <br/>
-                // Get current time
-                const now = useTemporalDateTime();<br/>
-                <br/>
-                // Create a time in the past
-                const pastTime = now.subtract(&#123; hours: 2 &#125;);<br/>
-                <br/>
-                // Get human-readable time ago
-                const timeAgo = useTimeAgo(pastTime);<br/>
-                // Returns a human-readable string like "2 hours ago" or "just now"
-              </code>
-          </span>
+          <strong>Example:</strong>
+          <pre><code>{
+`import { useTimeAgo, useTemporalDateTime } from 'temporal-react-hook';
+
+const now = useTemporalDateTime();
+const fiveMinAgo = now.subtract({ minutes: 5 });
+const timeAgo = useTimeAgo(fiveMinAgo, 5000); // refresh every 5s
+// timeAgo === "5 minutes ago"`
+          }</code></pre>
         </div>
       </div>
     </section>

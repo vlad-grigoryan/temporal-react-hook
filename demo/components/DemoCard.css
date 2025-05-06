@@ -181,10 +181,6 @@
   margin-bottom: 0.35rem;
 }
 
-.demo-info-card .demo-description span {
-  color: #4a5568;
-}
-
 .demo-info-card div code {
   display: inline;
   background: #edf2f7;
@@ -241,6 +237,33 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 15px;
   margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .demo-times-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-times-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .demo-time-item {
+    padding: 8px;
+  }
+  
+  .time-value {
+    font-size: 1.1em;
+    word-break: break-word;
+  }
+  
+  .time-actual {
+    font-size: 0.75em;
+  }
 }
 
 .demo-time-item {

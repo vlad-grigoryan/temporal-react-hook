@@ -208,12 +208,13 @@ const formattedDate = useLocaleDateTime(now, 'en-US');
 - **Accessibility:** Improve accessibility by respecting user locale and formatting conventions.
 
 ### `useTimeAgo hook`
-<p>The <b>useTimeAgo</b> hook returns a live-updating, human-friendly string representing how long ago a Temporal date/time occurred (e.g., "just now", "5 minutes ago", "2 days ago"). It supports <code>Temporal.PlainDateTime</code>, <code>Temporal.ZonedDateTime</code>, and <code>Temporal.Instant</code>.</p>
+<p>The <b>useTimeAgo</b> hook returns a live-updating, human-friendly string representing how long ago a Temporal date/time occurred (e.g., "just now", "5 minutes ago", "2 days ago"). For dates older than 7 days or future dates, it returns a plain ISO date (YYYY-MM-DD). It supports <code>Temporal.PlainDateTime</code>, <code>Temporal.ZonedDateTime</code>, and <code>Temporal.Instant</code>.</p>
 
 #### Features:
 - __Live updating:__ The string updates automatically as time passes.
 - __Flexible input:__ Accepts all major Temporal types.
 - __Customizable interval:__ Choose how often the string updates.
+- __Smart fallback:__ Returns ISO dates for future dates or dates older than 7 days.
 
 #### Example Usage:
 
@@ -225,6 +226,15 @@ const now = useTemporalDateTime();
 const twoDaysAgo = now.subtract({ days: 2 });
 const timeAgo = useTimeAgo(twoDaysAgo);
 // Output: "2 days ago"
+
+// Future or old dates fall back to ISO format
+const future = now.add({ days: 1 });
+const futureAgo = useTimeAgo(future);
+// Output: "2025-05-07"
+
+const old = now.subtract({ days: 10 });
+const oldAgo = useTimeAgo(old);
+// Output: "2025-04-26"
 ```
 
 #### Use Cases:
