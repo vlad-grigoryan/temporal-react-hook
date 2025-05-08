@@ -1,6 +1,6 @@
 {
   "name": "temporal-react-hook",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "A React library that provides hooks for handling date and time operations using the Temporal API",
   "main": "index.js",
   "scripts": {

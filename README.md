@@ -27,12 +27,15 @@
 ### Description for Hooks
 
 ### `useCurrentDateTime hook`
-<p>The <b>useCurrentDateTime</b> hook provides the current date and time using the Temporal API. It automatically updates the date and time every second, ensuring that the component using this hook always displays the most recent time.</p>
+<p>The <b>useCurrentDateTime</b> hook provides the current date and time using the Temporal API. It automatically updates at configurable intervals, ensuring that the component using this hook always displays the most recent time.</p>
 
 #### Features:
 
-- __Real-time Updates:__ The hook updates the current date and time every second.
+- __Configurable Updates:__ Set custom update intervals (default: 1 second).
+- __Precision Control:__ Option to include or exclude milliseconds for performance optimization.
+- __Performance Throttling:__ Reduce unnecessary re-renders with configurable throttling.
 - __Temporal API Integration:__ Utilizes the Temporal API for precise and reliable date and time handling.
+- __Memory Efficient:__ Uses refs for proper interval cleanup to prevent memory leaks.
 - __Ease of Use:__ Simple to integrate and use in any React component.
 
 #### Example Usage:
@@ -46,12 +49,22 @@ import React from 'react';
 import { useCurrentDateTime } from 'temporal-react-hook';
 
 const App = () => {
+  // Basic usage with default settings (1 second updates)
   const now = useCurrentDateTime();
+  
+  // With custom configuration
+  const preciseTime = useCurrentDateTime({
+    updateInterval: 100,        // Update every 100ms for smoother updates
+    includeMilliseconds: true,  // Include millisecond precision
+    updateOnMount: true,        // Update immediately when component mounts
+    throttleMs: 250            // Only update if 250ms has passed (reduces re-renders)
+  });
 
   return (
     <div>
       <h1>Current Date and Time</h1>
-      <p>{now.toString()}</p>
+      <p>Standard: {now.toString()}</p>
+      <p>High precision: {preciseTime.toString()}</p>
     </div>
   );
 };

@@ -339,6 +339,119 @@ pre {
   border-color: #4299e1 !important;
 }
 
+/* Configuration panel styles */
+.demo-config-panel {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.demo-config-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.demo-config-row:last-child {
+  margin-bottom: 0;
+}
+
+.demo-config-row span {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.demo-btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Make configuration panel responsive */
+@media (max-width: 768px) {
+  .demo-config-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .demo-btn-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .demo-config-row span {
+    margin-bottom: 0.25rem;
+  }
+}
+
+/* Options table styles */
+.demo-options-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.demo-options-table th,
+.demo-options-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 1px solid #e2e8f0;
+}
+
+.demo-options-table th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #334155;
+}
+
+.demo-options-table tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.demo-options-table code {
+  background-color: #edf2f7;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.9em;
+  color: #3182ce;
+}
+
+.demo-options {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.demo-options strong {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 1.05rem;
+  color: #2d3748;
+}
+
+/* Make table responsive on mobile */
+@media (max-width: 640px) {
+  .demo-options-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .demo-options-table th,
+  .demo-options-table td {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
 .demo-input-wide {
   width: 320px;
   padding: 0.4rem 1rem;
