@@ -84,11 +84,13 @@ export default App;
 
 
 ### `useTimeZone hook`
-<p>The <b>useTimeZone</b> hook provides the current time zone and a function to convert a given date-time to a different time zone using the Temporal API.</p>
+<p>The <b>useTimeZone</b> hook provides the current time zone and a function to convert a given date-time to a different time zone using the Temporal API. It offers flexible conversion options including output format control and wall-clock time preservation.</p>
 
 #### Features:
 - __Current Time Zone:__ Provides the current time zone.
-- __Time Zone Conversion:__ Converts a given PlainDateTime to a specified time zone, preserving the instant in time (not just the wall clock time).
+- __Flexible Time Zone Conversion:__ Converts between time zones with multiple output format options.
+- __Wall-Clock Time Preservation:__ Option to preserve either the exact instant or the wall-clock time during conversion.
+- __String Formatting:__ Built-in formatting options for string output.
 
 ### Example Usage
 
@@ -104,22 +106,72 @@ const App = () => {
     const now = useTemporalDateTime();
     const { timeZone, convertToTimeZone } = useTimeZone();
 
-    // Convert to New York time, preserving the instant
+    // Basic conversion (preserves the exact instant in time)
     const newYorkDateTime = convertToTimeZone(now, 'America/New_York');
+
+    // Get a formatted string with custom options
+    const formattedTime = convertToTimeZone(now, 'America/New_York', {
+        outputFormat: 'string',
+        formatOptions: { dateStyle: 'full', timeStyle: 'long' }
+    });
+
+    // Preserve wall-clock time (e.g., 3:00 PM stays 3:00 PM in the new zone)
+    const sameWallTime = convertToTimeZone(now, 'America/New_York', {
+        preserveWallTime: true
+    });
+
+    // Get a PlainDateTime (without time zone information)
+    const plainDateTime = convertToTimeZone(now, 'America/New_York', {
+        outputFormat: 'plain'
+    });
 
     return (
         <div>
             <div>Current time in your zone: {now.toString()}</div>
             <div>Current time in New York: {newYorkDateTime.toString()}</div>
+            <div>Formatted time: {formattedTime}</div>
+            <div>Same wall time: {sameWallTime.toString()}</div>
+            <div>Plain date time: {plainDateTime.toString()}</div>
         </div>
     );
 };
 ```
 
+### API Reference
+
+```typescript
+function useTimeZone(): {
+    timeZone: string;
+    convertToTimeZone: (dateTime: Temporal.PlainDateTime | Temporal.ZonedDateTime | Temporal.Instant, 
+                        targetTimeZone: string, 
+                        options?: ConversionOptions) => any;
+}
+
+interface ConversionOptions {
+    // Output format for the conversion
+    outputFormat?: 'zoned' | 'plain' | 'instant' | 'string';
+    
+    // If true, preserves the wall-clock time when converting
+    // If false (default), preserves the exact instant in time
+    preserveWallTime?: boolean;
+    
+    // Format options for string output (only used when outputFormat is 'string')
+    formatOptions?: {
+        dateStyle?: 'full' | 'long' | 'medium' | 'short';
+        timeStyle?: 'full' | 'long' | 'medium' | 'short';
+        [key: string]: any;
+    };
+    
+    // Locale for string formatting (only used when outputFormat is 'string')
+    locale?: string;
+}
+```
+
 ### Benefits
-- __Current Time Zone Information__  The hook provides easy access to the current time zone of the user's environment, allowing your application to adapt to the user's locale without additional configuration.
-- __Time Zone Conversion:__ The hook includes a built-in function to convert any given date-time to a specified target time zone, which simplifies handling global time zones in applications. This is particularly useful for applications that display events or schedules across different time zones.
-- __Simplifies Complex Logic:__  By abstracting the complexity of time zone handling, this hook makes it easier for developers to implement and maintain code that involves date-time manipulations across different time zones.
+- __Current Time Zone Information:__ The hook provides easy access to the current time zone of the user's environment, allowing your application to adapt to the user's locale without additional configuration.
+- __Flexible Time Zone Conversion:__ The hook includes a powerful function to convert date-times between time zones with multiple output format options, making it suitable for a wide range of use cases.
+- __Wall-Clock Time Preservation:__ The ability to preserve either the exact instant or the wall-clock time during conversion enables both accurate time tracking and user-friendly scheduling applications.
+- __Simplified Complex Logic:__ By abstracting the complexity of time zone handling, this hook makes it easier for developers to implement and maintain code that involves date-time manipulations across different time zones.
 
 
 ### `useDuration hook`

@@ -103,18 +103,20 @@ export default function DemoUseCurrentDateTime() {
         </div>
       </div>
       
-      {/* Display current time */}
-      <div className="demo-row">
-        <b>Current Date:</b>
-        <span className="demo-value">{formattedTime.dateString}</span>
-      </div>
-      <div className="demo-row">
-        <b>Current Time:</b>
-        <span className="demo-value">{formattedTime.timeString}</span>
-      </div>
-      <div className="demo-row">
-        <b>ISO Format:</b>
-        <span className="demo-value">{now.toString()}</span>
+      {/* Results display block */}
+      <div className="demo-config-panel">
+        <div className="demo-config-row">
+          <span>Current Date:</span>
+          <span className="demo-value">{formattedTime.dateString}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Current Time:</span>
+          <span className="demo-value">{formattedTime.timeString}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>ISO Format:</span>
+          <span className="demo-value">{now.toString()}</span>
+        </div>
       </div>
       
       {/* Documentation */}

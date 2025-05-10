@@ -43,6 +43,7 @@ const Playground: FC = () => {
   const navRef = useRef<HTMLDivElement>(null);
   const [showUpArrow, setShowUpArrow] = useState(false);
   const [showDownArrow, setShowDownArrow] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const nav = navRef.current;
@@ -60,9 +61,30 @@ const Playground: FC = () => {
     };
   }, []);
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  // Close menu when selecting an item on mobile
+  const handleSelectItem = (key: string) => {
+    setSelected(key);
+    if (window.innerWidth <= 768) {
+      setMenuOpen(false);
+    }
+  };
+
   return (
-    <div className="playground-root">
-      <aside className="playground-sidebar">
+    <div className={`playground-root ${menuOpen ? 'menu-open' : ''}`}>
+      {/* Hamburger menu button for mobile/tablet */}
+      <button 
+        className="playground-menu-toggle" 
+        onClick={toggleMenu}
+        aria-label="Toggle menu"
+      >
+        <span className="hamburger-icon"></span>
+      </button>
+      
+      <aside className={`playground-sidebar ${menuOpen ? 'menu-open' : ''}`}>
         <div className="playground-sidebar-header">
           <span role="img" aria-label="clock" className="playground-sidebar-icon">⏰</span>
           Temporal React Hooks
@@ -79,7 +101,7 @@ const Playground: FC = () => {
               {demoSections.map(section => (
                 <div
                   key={section.key}
-                  onClick={() => setSelected(section.key)}
+                  onClick={() => handleSelectItem(section.key)}
                   onMouseEnter={() => setHovered(section.key)}
                   onMouseLeave={() => setHovered(null)}
                   className={`playground-nav-item${selected === section.key ? ' selected' : ''}${hovered === section.key ? ' hovered' : ''}`}

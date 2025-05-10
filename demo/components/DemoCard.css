@@ -370,21 +370,68 @@ pre {
   gap: 0.5rem;
 }
 
-/* Make configuration panel responsive */
+/* Responsive styles for config panel */
 @media (max-width: 768px) {
+  .demo-config-panel {
+    padding: 0.75rem;
+  }
+  
   .demo-config-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .demo-config-row span {
+    margin-bottom: 0.5rem;
   }
   
   .demo-btn-group {
     width: 100%;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 0.5rem;
   }
   
-  .demo-config-row span {
-    margin-bottom: 0.25rem;
+  .demo-select-btn {
+    width: 100%;
+    min-width: 0;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    white-space: normal;
+    height: auto;
+    line-height: 1.2;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-config-panel {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .demo-btn-group {
+    gap: 0.25rem;
+  }
+  
+  .demo-select-btn {
+    width: 100%;
+    min-width: 0;
+    padding: 0.4rem;
+    font-size: 0.85rem;
+    white-space: normal;
+    height: auto;
+    line-height: 1.2;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: 0;
+  }
+  
+  .demo-value {
+    word-break: break-word;
   }
 }
 
@@ -597,4 +644,125 @@ pre {
   justify-content: flex-start;
   padding: 2.5rem 2.5rem 2.5rem 0.5rem;
   box-sizing: border-box;
+}
+
+/* Hamburger menu button */
+.playground-menu-toggle {
+  display: none;
+  position: absolute;
+  top: 25px;
+  left: 20px;
+  z-index: 1000;
+  background: #ffffff;
+  color: #1976d2;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  transition: left 0.3s ease;
+  width: 34px;
+  height: 34px;
+  padding: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.playground-menu-toggle:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  border-color: #d0d5dd;
+}
+
+.playground-menu-toggle:focus {
+  outline: none;
+  border-color: #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.playground-menu-toggle:focus-visible {
+  outline: none;
+}
+
+/* Hamburger icon */
+.hamburger-icon {
+  display: block;
+  position: relative;
+  width: 22px;
+  height: 2px;
+  background: #1976d2;
+  margin: 10px auto;
+  transition: background-color 0.2s;
+}
+
+.hamburger-icon:before,
+.hamburger-icon:after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 2px;
+  background: #1976d2;
+  left: 0;
+  transition: transform 0.2s;
+}
+
+.hamburger-icon:before {
+  top: -7px;
+}
+
+.hamburger-icon:after {
+  bottom: -7px;
+}
+
+/* Animate hamburger icon when menu is open */
+.playground-root .playground-menu-toggle .hamburger-icon {
+  transition: background-color 0.2s ease;
+}
+
+.playground-root.menu-open .playground-menu-toggle .hamburger-icon {
+  background: transparent;
+}
+
+.playground-root.menu-open .playground-menu-toggle .hamburger-icon:before {
+  transform: rotate(45deg) translate(4px, 4px);
+  transition: transform 0.2s ease;
+}
+
+.playground-root.menu-open .playground-menu-toggle .hamburger-icon:after {
+  transform: rotate(-45deg) translate(4px, -4px);
+  transition: transform 0.2s ease;
+}
+
+/* Menu open state - change button position */
+.playground-root.menu-open .playground-menu-toggle {
+  left: 8px;
+}
+
+/* Responsive styles for tablets and mobile */
+@media (max-width: 768px) {
+  .playground-menu-toggle {
+    display: block;
+  }
+  
+  .playground-sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .playground-sidebar.menu-open {
+    left: 0;
+  }
+  
+  .playground-main {
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  .playground-main-content {
+    padding: 2.5rem 1.5rem;
+    margin-top: 40px;
+  }
 }
