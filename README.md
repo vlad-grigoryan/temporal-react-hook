@@ -175,12 +175,14 @@ interface ConversionOptions {
 
 
 ### `useDuration hook`
-<p>The <b>useDuration</b> hook provides utilities for working with durations using the Temporal API. This hook allows users to create durations, perform operations like adding or subtracting them from date-times, and format durations in a human-readable string.</p>
+<p>The <b>useDuration</b> hook provides utilities for working with durations using the Temporal API. This hook allows users to create durations, perform operations like adding or subtracting them from date-times, compare durations, calculate total seconds, and format durations in a human-readable string.</p>
 
 #### Features:
 - __Create Durations:__ Easily create durations from various units (e.g., hours, minutes, days).
 - __Add or Subtract Durations:__ Perform addition or subtraction of durations to/from date-times.
-- __Format Durations:__ Format durations in a human-readable string..
+- __Compare Durations:__ Compare two durations to determine which is longer.
+- __Calculate Total Seconds:__ Convert any duration to its total equivalent in seconds.
+- __Format Durations:__ Format durations in a human-readable string (e.g., "1 hour, 30 minutes, 15 seconds").
 
 ### Example Usage
 
@@ -195,7 +197,14 @@ import { useTemporalDateTime, useTimeZone, useDuration } from 'temporal-react-ho
 const App = () => {
     const now = useTemporalDateTime();
     const { timeZone, convertToTimeZone } = useTimeZone();
-    const { createDuration, addDuration, subtractDuration, formatDuration } = useDuration();
+    const { 
+        createDuration, 
+        addDuration, 
+        subtractDuration, 
+        formatDuration,
+        compareDurations,
+        getTotalSeconds 
+    } = useDuration();
 
     const newYorkDateTime = convertToTimeZone(now, 'America/New_York');
 
@@ -226,9 +235,11 @@ export default App;
 ```
 
 ### Benefits
-- __Simplified Duration Management:__  Easily create and manage durations using the Temporal API.
-- __Duration Operations:__ Perform addition and subtraction operations with durations, enhancing date-time manipulation capabilities.
-- __Improved User Experience:__  Provides precise duration handling, which is essential for applications that involve scheduling, timers, and time calculations.
+- __Simplified Duration Management:__ Easily create and manage durations using the Temporal API.
+- __Duration Operations:__ Perform addition, subtraction, and comparison operations with durations, enhancing date-time manipulation capabilities.
+- __Duration Analysis:__ Compare durations and calculate total seconds for advanced time-based calculations.
+- __Human-Readable Formatting:__ Convert technical duration objects into user-friendly strings.
+- __Improved User Experience:__ Provides precise duration handling, which is essential for applications that involve scheduling, timers, and time calculations.
 
 ### `useRelativeTime hook`
 The `useRelativeTime` hook returns a human-friendly string representing how much time has passed since (or until) a given date/time.
