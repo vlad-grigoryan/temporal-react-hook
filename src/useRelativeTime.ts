@@ -22,16 +22,25 @@ function getInstant(input: any): Temporal.Instant {
   }
 }
 
-function getRelativeString(from: Temporal.Instant, to: Temporal.Instant, style?: string): string {
+function getRelativeString(from: Temporal.Instant, to: Temporal.Instant, style?: string, locale?: string): string {
   // Use hour as largest unit as that's what Temporal allows
   const duration = from.until(to, { largestUnit: 'hour' });
   const seconds = duration.total({ unit: 'seconds' });
   
   if (Math.abs(seconds) < 45) return 'just now';
   
-  // Custom formatting without relying on Intl.RelativeTimeFormat
+  // Use Intl.RelativeTimeFormat if available for proper localization
   const absSeconds = Math.abs(seconds);
   const isInFuture = seconds < 0; // If negative, the reference time is in the future
+  
+  // Create a RelativeTimeFormat instance if locale is provided and the browser supports it
+  let rtf = null;
+  if (locale && typeof Intl !== 'undefined' && 'RelativeTimeFormat' in Intl) {
+    rtf = new (Intl as any).RelativeTimeFormat(locale, {
+      numeric: 'always',
+      style: style === 'narrow' ? 'narrow' : style === 'short' ? 'short' : 'long'
+    });
+  }
   
   // Create formatted strings based on style
   const formatValue = (value: number, unit: string): string => {
@@ -51,6 +60,15 @@ function getRelativeString(from: Temporal.Instant, to: Temporal.Instant, style?:
   };
   
   const formatRelative = (value: number, unit: string): string => {
+    // If we have a RelativeTimeFormat instance and a valid unit, use it
+    if (rtf && ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'].includes(unit)) {
+      // Negate the value for future times (RTF expects negative for future)
+      const rtfValue = isInFuture ? -value : value;
+      // Use the unit directly - TypeScript doesn't recognize RelativeTimeFormatUnit
+      return rtf.format(rtfValue, unit);
+    }
+    
+    // Fallback to custom formatting if RTF is not available or unit is invalid
     const formatted = formatValue(value, unit);
     
     if (style === 'narrow') {
@@ -113,13 +131,13 @@ export default function useRelativeTime(
   
   const [relative, setRelative] = useState(() => {
     const now = Temporal.Now.instant();
-    return getRelativeString(getInstant(input), now, style);
+    return getRelativeString(getInstant(input), now, style, locale);
   });
 
   useEffect(() => {
     const update = () => {
       const now = Temporal.Now.instant();
-      setRelative(getRelativeString(getInstant(input), now, style));
+      setRelative(getRelativeString(getInstant(input), now, style, locale));
     };
     
     update(); // Initial update

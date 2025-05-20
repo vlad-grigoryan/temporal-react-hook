@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./DemoCard.css";
 import useRelativeTime from "../../src/useRelativeTime";
-import useTemporalDateTime from "../../src/useTemporalDateTime.ts";
+import useTemporalDateTime from "../../src/useTemporalDateTime";
 
 export default function DemoUseRelativeTime() {
   // Use our hook to get the current date and time 
@@ -39,90 +39,119 @@ export default function DemoUseRelativeTime() {
     return () => clearInterval(interval);
   }, [now]); // Add now as a dependency
   
-  // Initialize formatting style state
+  // Initialize formatting style and locale state
   const [formatStyle, setFormatStyle] = useState<'long' | 'short' | 'narrow'>('long');
+  const [locale, setLocale] = useState<string>('en-US');
   
-  // Format all the different time points with the selected style
+  // Available locales for demo
+  const availableLocales = [
+    { code: 'en-US', name: 'English (US)' },
+    { code: 'fr-FR', name: 'French' },
+    { code: 'es-ES', name: 'Spanish' },
+    { code: 'de-DE', name: 'German' },
+    { code: 'ja-JP', name: 'Japanese' },
+    { code: 'ru-RU', name: 'Russian' }
+  ];
+  
+  // Format all the different time points with the selected style and locale
   const formattedTimes = {
-    justNow: useRelativeTime(timePoints.justNow, { style: formatStyle }),
-    minutes: useRelativeTime(timePoints.minutes, { style: formatStyle }),
-    hours: useRelativeTime(timePoints.hours, { style: formatStyle }),
-    days: useRelativeTime(timePoints.days, { style: formatStyle }),
-    weeks: useRelativeTime(timePoints.weeks, { style: formatStyle }),
-    months: useRelativeTime(timePoints.months, { style: formatStyle }),
-    years: useRelativeTime(timePoints.years, { style: formatStyle }),
-    future: useRelativeTime(timePoints.future, { style: formatStyle })
+    justNow: useRelativeTime(timePoints.justNow, { style: formatStyle, locale }),
+    minutes: useRelativeTime(timePoints.minutes, { style: formatStyle, locale }),
+    hours: useRelativeTime(timePoints.hours, { style: formatStyle, locale }),
+    days: useRelativeTime(timePoints.days, { style: formatStyle, locale }),
+    weeks: useRelativeTime(timePoints.weeks, { style: formatStyle, locale }),
+    months: useRelativeTime(timePoints.months, { style: formatStyle, locale }),
+    years: useRelativeTime(timePoints.years, { style: formatStyle, locale }),
+    future: useRelativeTime(timePoints.future, { style: formatStyle, locale })
   };
   
   return (
     <section className="demo-card">
       <h3>useRelativeTime</h3>
       
-      <div className="demo-controls">
-        <div className="format-selector">
-          <label>Formatting Style: </label>
+      {/* Configuration controls */}
+      <div className="demo-config-panel">
+        <div className="demo-config-row">
+          <span>Formatting Style:</span>
           <select 
             value={formatStyle} 
             onChange={(e) => setFormatStyle(e.target.value as 'long' | 'short' | 'narrow')}
-            className="format-select"
           >
             <option value="long">Long (3 minutes ago)</option>
             <option value="short">Short (3 min ago)</option>
             <option value="narrow">Narrow (3m)</option>
           </select>
         </div>
-      </div>
-      
-      <div className="demo-times-grid">
-        <div className="demo-time-item">
-          <div className="time-label">Just Now:</div>
-          <div className="time-value">{formattedTimes.justNow}</div>
-          <div className="time-actual">{timePoints.justNow.toString()}</div>
-        </div>
-        
-        <div className="demo-time-item">
-          <div className="time-label">Minutes:</div>
-          <div className="time-value">{formattedTimes.minutes}</div>
-          <div className="time-actual">{timePoints.minutes.toString()}</div>
-        </div>
-        
-        <div className="demo-time-item">
-          <div className="time-label">Hours:</div>
-          <div className="time-value">{formattedTimes.hours}</div>
-          <div className="time-actual">{timePoints.hours.toString()}</div>
-        </div>
-        
-        <div className="demo-time-item">
-          <div className="time-label">Days:</div>
-          <div className="time-value">{formattedTimes.days}</div>
-          <div className="time-actual">{timePoints.days.toString()}</div>
-        </div>
-        
-        <div className="demo-time-item">
-          <div className="time-label">Weeks:</div>
-          <div className="time-value">{formattedTimes.weeks}</div>
-          <div className="time-actual">{timePoints.weeks.toString()}</div>
-        </div>
-        
-        <div className="demo-time-item">
-          <div className="time-label">Months:</div>
-          <div className="time-value">{formattedTimes.months}</div>
-          <div className="time-actual">{timePoints.months.toString()}</div>
-        </div>
-        
-        <div className="demo-time-item">
-          <div className="time-label">Years:</div>
-          <div className="time-value">{formattedTimes.years}</div>
-          <div className="time-actual">{timePoints.years.toString()}</div>
-        </div>
-        
-        <div className="demo-time-item">
-          <div className="time-label">Future:</div>
-          <div className="time-value">{formattedTimes.future}</div>
-          <div className="time-actual">{timePoints.future.toString()}</div>
+        <div className="demo-config-row">
+          <span>Locale:</span>
+          <select 
+            value={locale} 
+            onChange={(e) => setLocale(e.target.value)}
+          >
+            {availableLocales.map(loc => (
+              <option key={loc.code} value={loc.code}>{loc.name}</option>
+            ))}
+          </select>
         </div>
       </div>
       
+      {/* Results display block */}
+      <div className="demo-config-panel">
+        <div className="demo-config-row">
+          <span>Just Now:</span>
+          <span className="demo-value">{formattedTimes.justNow}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Minutes:</span>
+          <span className="demo-value">{formattedTimes.minutes}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Hours:</span>
+          <span className="demo-value">{formattedTimes.hours}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Days:</span>
+          <span className="demo-value">{formattedTimes.days}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Weeks:</span>
+          <span className="demo-value">{formattedTimes.weeks}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Months:</span>
+          <span className="demo-value">{formattedTimes.months}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Years:</span>
+          <span className="demo-value">{formattedTimes.years}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Future:</span>
+          <span className="demo-value">{formattedTimes.future}</span>
+        </div>
+      </div>
+      
+      {/* Actual times display */}
+      <div className="demo-config-panel">
+        <div className="demo-config-row">
+          <span>Just Now (actual):</span>
+          <span className="demo-value">{timePoints.justNow.toString()}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Minutes (actual):</span>
+          <span className="demo-value">{timePoints.minutes.toString()}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Hours (actual):</span>
+          <span className="demo-value">{timePoints.hours.toString()}</span>
+        </div>
+        <div className="demo-config-row">
+          <span>Days (actual):</span>
+          <span className="demo-value">{timePoints.days.toString()}</span>
+        </div>
+      </div>
+      
+      {/* Documentation */}
       <div className="demo-info-card">
         <div className="demo-description">
           <strong>Description:</strong>
@@ -135,25 +164,26 @@ export default function DemoUseRelativeTime() {
           <span>
             <strong>Syntax:</strong> useRelativeTime(dateTime, options?)<br/>
             <strong>Parameters:</strong><br/>
-            - dateTime: A Temporal date/time object (PlainDateTime, ZonedDateTime, or Instant)<br/>
-            - options?: Optional configuration object:<br/>
-            &nbsp;&nbsp;&nbsp; - refreshIntervalMs: How often to refresh the relative time (default: 10000ms)<br/>
-            &nbsp;&nbsp;&nbsp; - locale: Locale for formatting (default: browser locale)<br/>
-            &nbsp;&nbsp;&nbsp; - style: Formatting style - 'long', 'short', or 'narrow'<br/>
+            &nbsp;&nbsp;• <strong>dateTime</strong>: A Temporal date/time object (PlainDateTime, ZonedDateTime, or Instant)<br/>
+            &nbsp;&nbsp;• <strong>options?</strong>: Optional configuration object:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <strong>refreshIntervalMs</strong>: How often to refresh the relative time (default: 10000ms)<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <strong>locale</strong>: Locale for formatting (e.g., 'en-US', 'fr-FR', 'ja-JP')<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <strong>style</strong>: Formatting style - 'long', 'short', or 'narrow'<br/>
             <strong>Returns:</strong> A human-friendly string representing relative time<br/>
             <strong>Example:</strong>
-            <code>
-              import &#123; useRelativeTime, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
-              <br/>
-              // Basic usage<br/>
-              const now = useTemporalDateTime();<br/>
-              const pastTime = now.subtract(&#123; hours: 3 &#125;);<br/>
-              const relativeTime = useRelativeTime(pastTime);<br/><br/>
-              // With options<br/>
-              const shortRelativeTime = useRelativeTime(pastTime, &#123;<br/>
-              &nbsp;&nbsp;style: 'short',<br/>
-              &nbsp;&nbsp;refreshIntervalMs: 5000<br/>
-              &#125;);
+            <code className="example-code">
+              <pre style={{ margin: 0 }}>{`import { useRelativeTime, useTemporalDateTime } from 'temporal-react-hook';
+
+// Basic usage
+const now = useTemporalDateTime();
+const pastTime = now.subtract({ hours: 3 });
+const relativeTime = useRelativeTime(pastTime);
+
+// With options
+const shortRelativeTime = useRelativeTime(pastTime, {
+  style: 'short',
+  refreshIntervalMs: 5000
+});`}</pre>
             </code>
           </span>
         </div>

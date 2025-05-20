@@ -1,4 +1,4 @@
-import  { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import "./DemoCard.css";
 import useDuration from "../../src/useDuration";
 import useTemporalDateTime from "../../src/useTemporalDateTime";
@@ -15,17 +15,17 @@ export default function DemoUseDuration() {
   const [comparisonMinutes, setComparisonMinutes] = useState<number>(15);
   const [comparisonSeconds, setComparisonSeconds] = useState<number>(0);
 
+  // Only extract the utility functions from useDuration, not the state-changing functions
   const { 
     formatDuration,
     addDuration, 
     subtractDuration, 
     compareDurations,
-    getTotalSeconds 
+    getTotalSeconds
   } = useDuration();
   const now = useTemporalDateTime();
 
-  // Create durations using Temporal directly instead of the hook's createDuration
-  // to avoid state updates that cause infinite renders
+  // Create durations directly with Temporal API to avoid state updates that cause infinite renders
   const duration = useMemo(() => {
     return Temporal.Duration.from({
       hours,
@@ -180,8 +180,7 @@ export default function DemoUseDuration() {
             &nbsp;&nbsp;• <strong>getTotalSeconds(duration)</strong>: Returns the total seconds of a duration<br />
             <strong>Example:</strong>
             <code className="example-code">
-              <pre style={{ margin: 0 }}>{`import { useDuration, useCurrentDateTime } from 'temporal-react-hook';
-import { Temporal } from '@js-temporal/polyfill';
+              <pre style={{ margin: 0 }}>{`import { useDuration, useTemporalDateTime } from 'temporal-react-hook';
 
 const DemoUseDuration = () => {
   const { 
