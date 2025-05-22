@@ -3,6 +3,11 @@ import { Temporal } from "@js-temporal/polyfill";
 
 type TemporalInput = Temporal.PlainDateTime | Temporal.ZonedDateTime | Temporal.Instant;
 
+/**
+ * Custom formatter function type that allows users to provide their own formatting logic
+ */
+type CustomFormatterFn = (date: Date, locale: string, originalValue: TemporalInput) => string;
+
 function isPlainDateTime(input: any): input is Temporal.PlainDateTime {
   return (
     typeof input === "object" &&
@@ -32,6 +37,10 @@ function isInstant(input: any): input is Temporal.Instant {
   );
 }
 
+function isCustomFormatter(input: any): input is CustomFormatterFn {
+  return typeof input === "function";
+}
+
 function toJSDate(input: TemporalInput): Date {
   if (isZonedDateTime(input)) {
     return new Date(input.epochMilliseconds);
@@ -44,16 +53,41 @@ function toJSDate(input: TemporalInput): Date {
   throw new Error("Unsupported Temporal type");
 }
 
+/**
+ * Hook for formatting Temporal date/time objects as localized strings
+ * 
+ * @param value - A Temporal date/time object (PlainDateTime, ZonedDateTime, or Instant)
+ * @param locale - Optional locale string (e.g., 'en-US', 'fr-FR')
+ * @param options - Either Intl.DateTimeFormatOptions or a custom formatter function
+ * @returns A formatted string based on the locale and options/formatter
+ * 
+ * @example
+ * // Using Intl.DateTimeFormatOptions
+ * const formatted = useLocaleDateTime(now, 'en-US', { dateStyle: 'full', timeStyle: 'short' });
+ * 
+ * @example
+ * // Using a custom formatter function
+ * const formatted = useLocaleDateTime(now, 'en-US', (date, locale, original) => {
+ *   // Custom formatting logic
+ *   return `Year: ${original.year}, Month: ${original.month}`;
+ * });
+ */
 export function useLocaleDateTime(
   value: TemporalInput,
   locale: string = typeof navigator !== 'undefined' ? navigator.language : 'en-US',
-  options?: Intl.DateTimeFormatOptions
+  options?: Intl.DateTimeFormatOptions | CustomFormatterFn
 ): string {
   const jsDate = useMemo(() => toJSDate(value), [value]);
-  return useMemo(
-    () => new Intl.DateTimeFormat(locale, options).format(jsDate),
-    [jsDate, locale, options]
-  );
+  
+  return useMemo(() => {
+    // If options is a function, use it as a custom formatter
+    if (isCustomFormatter(options)) {
+      return options(jsDate, locale, value);
+    }
+    
+    // Otherwise, use Intl.DateTimeFormat with the provided options
+    return new Intl.DateTimeFormat(locale, options).format(jsDate);
+  }, [jsDate, locale, options, value]);
 }
 
 export default useLocaleDateTime;

@@ -49,6 +49,7 @@
 .demo-card input[type="text"],
 .demo-card input[type="number"],
 .demo-card input[type="datetime-local"],
+.demo-input,
 .demo-card select {
   border: 1px solid #e2e8f0;
   border-radius: 4px;
@@ -765,4 +766,18 @@ pre {
     padding: 2.5rem 1.5rem;
     margin-top: 40px;
   }
+}
+
+/* Custom formatter styles */
+.demo-format-help {
+  margin-top: 0.5rem;
+  width: 100%;
+  color: #718096;
+  font-size: 0.85rem;
+}
+
+.demo-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-family: monospace;
 }
