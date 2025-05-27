@@ -6,9 +6,11 @@ export default function DemoUseIsToday() {
   const now = useTemporalDateTime();
   const today = now.toPlainDate();
   const [date, setDate] = useState(today);
+  const [selectedTimeZone, setSelectedTimeZone] = useState<string>('UTC'); // Default to UTC
+
   // Convert PlainDate to PlainDateTime at midnight for compatibility
   const dateTime = date.toPlainDateTime({ hour: 0, minute: 0, second: 0, millisecond: 0 });
-  const isToday = useIsToday(dateTime);
+  const isToday = useIsToday(dateTime, selectedTimeZone);
   const dates = [
     today,
     today.subtract({ days: 1 }),
@@ -16,24 +18,61 @@ export default function DemoUseIsToday() {
     today.add({ days: 1 }),
     today.add({ days: 2 })
   ];
+
+  const availableTimeZones = [
+    'UTC',
+    'America/New_York',
+    'Europe/London',
+    'Asia/Tokyo',
+    'Australia/Sydney',
+    'Pacific/Honolulu',
+    'America/Los_Angeles',
+    'Europe/Paris'
+  ];
+
   return (
     <section className="demo-card">
       <h3>useIsToday</h3>
-      <div className="demo-row">
-        <b>Date:</b>
-        {dates.map((d, i) => (
-          <button
-            key={i}
-            className={`demo-select-btn${d.equals(date) ? " active" : ""}`}
-            onClick={() => setDate(d)}
+      
+      {/* Configuration panel */}
+      <div className="demo-config-panel">
+        <div className="demo-config-row">
+          <span>Date:</span>
+          <div className="demo-button-group">
+            {dates.map((d, i) => (
+              <button
+                key={i}
+                className={`demo-select-btn${d.equals(date) ? " active" : ""}`}
+                onClick={() => setDate(d)}
+              >
+                {d.toString()}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="demo-config-row">
+          <span>Time Zone:</span>
+          <select
+            value={selectedTimeZone}
+            onChange={(e) => setSelectedTimeZone(e.target.value)}
           >
-            {d.toString()}
-          </button>
-        ))}
+            {availableTimeZones.map(tz => (
+              <option key={tz} value={tz}>{tz}</option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div className="demo-row">
-        <b>Is Today?:</b> <span className="demo-value">{isToday ? 'Yes' : 'No'}</span>
+
+      {/* Results display */}
+      <div className="demo-config-panel">
+        <div className="demo-config-row">
+          <span>Is Today?:</span>
+          <span className="demo-value">{isToday ? 'Yes' : 'No'}</span>
+        </div>
       </div>
+
+      {/* Documentation */}
       <div className="demo-info-card">
         <div className="demo-description">
           <strong>Description:</strong>
@@ -41,20 +80,21 @@ export default function DemoUseIsToday() {
         </div>
         <div className="demo-usage">
           <span>
-            <strong>Syntax:</strong> useIsToday(dateTime)<br/>
+            <strong>Syntax:</strong> useIsToday(dateTime, timeZone?)<br/>
             <strong>Parameters:</strong><br/>
             - dateTime: A Temporal date/time object (PlainDateTime, ZonedDateTime, or Instant)<br/>
+            - timeZone?: Optional string representing the time zone to check against (e.g., 'America/New_York'). Defaults to system time zone.<br/>
             <strong>Returns:</strong> A boolean indicating whether the provided date is today<br/>
             <strong>Example:</strong>
-            <code>
-              import &#123; useIsToday, useTemporalDateTime &#125; from 'temporal-react-hook';<br/>
-              <br/>
-              // Get the current date/time
-              const now = useTemporalDateTime();<br/>
-              // Create a date/time to check
-              const dateTime = now; // or any other Temporal date/time<br/>
-              const isToday = useIsToday(dateTime);<br/>
-              // Returns true if dateTime is today, false otherwise
+            <code className="example-code">
+              <pre style={{ margin: 0 }}>{`import { useIsToday, useTemporalDateTime } from 'temporal-react-hook';
+
+// Get the current date/time
+const now = useTemporalDateTime();
+// Create a date/time to check
+const dateTime = now; // or any other Temporal date/time
+const isToday = useIsToday(dateTime, 'America/New_York');
+// Returns true if dateTime is today in America/New_York, false otherwise`}</pre>
             </code>
           </span>
         </div>
