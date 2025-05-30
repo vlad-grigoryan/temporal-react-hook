@@ -1,18 +1,32 @@
 import { Temporal } from '@js-temporal/polyfill';
+import { useMemo } from 'react';
 
-export default function useIsThisWeek(date: Temporal.PlainDateTime): boolean {
-  const now = Temporal.Now.plainDateTimeISO();
-  // ISO week: get weekOfYear for both
-  // Temporal.PlainDateTime does not have weekOfYear, so convert to PlainDate
-  const datePlain = Temporal.PlainDate.from(date);
-  const nowPlain = Temporal.PlainDate.from(now);
-  // Use toString to get YYYY-MM-DD, then use Temporal.PlainDate.from
-  const getISOWeek = (d: Temporal.PlainDate) => {
-    // Algorithm from ISO week date
-    const temp = d.with({ day: d.day });
-    const thursday = temp.add({ days: 3 - ((temp.dayOfWeek + 6) % 7) });
-    const week1 = Temporal.PlainDate.from({ year: thursday.year, month: 1, day: 4 });
-    return 1 + Math.floor((thursday.since(week1).days) / 7);
-  };
-  return datePlain.year === nowPlain.year && getISOWeek(datePlain) === getISOWeek(nowPlain);
+export default function useIsThisWeek(
+  dateTime: Temporal.PlainDateTime | Temporal.ZonedDateTime | Temporal.Instant,
+  timeZone?: string
+): boolean {
+  const currentTimeZone = useMemo(() => timeZone || Temporal.Now.timeZoneId(), [timeZone]);
+
+  const todayInTargetTimeZone = useMemo(() => {
+    return Temporal.Now.zonedDateTimeISO(currentTimeZone).toPlainDate();
+  }, [currentTimeZone]);
+
+  const inputDateInTargetTimeZone = useMemo(() => {
+    if (dateTime instanceof Temporal.PlainDateTime) {
+      return dateTime.toZonedDateTime(currentTimeZone).toPlainDate();
+    } else if (dateTime instanceof Temporal.ZonedDateTime) {
+      return dateTime.withTimeZone(currentTimeZone).toPlainDate();
+    } else if (dateTime instanceof Temporal.Instant) {
+      return dateTime.toZonedDateTimeISO(currentTimeZone).toPlainDate();
+    }
+    console.warn('useIsThisWeek received an unexpected Temporal type:', dateTime);
+    return Temporal.PlainDate.from('0000-01-01'); // Fallback
+  }, [dateTime, currentTimeZone]);
+
+  // Get the start of the week for both dates (Monday as first day of week for ISO 8601)
+  // dayOfWeek is 1 for Monday, 7 for Sunday
+  const startOfWeekInput = inputDateInTargetTimeZone.subtract({ days: inputDateInTargetTimeZone.dayOfWeek - 1 });
+  const startOfWeekToday = todayInTargetTimeZone.subtract({ days: todayInTargetTimeZone.dayOfWeek - 1 });
+
+  return startOfWeekInput.equals(startOfWeekToday);
 }
