@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.11] - 2025-06-03
+### Added
+- `useIsSame` hook now accepts an optional `timeZone` parameter for time zone-aware comparisons.
+- `DemoUseIsSame` component updated to include a time zone selector in the UI.
+- `DemoUseIsThisWeek` component updated for UI consistency (removed date buttons, added datetime-local input) and integrated time zone selector.
+
+### Changed
+- Removed direct `@js-temporal/polyfill` imports from `DemoUseIsSame` and `DemoUseIsThisWeek` demo components for cleaner code.
+
 ## [1.6.9] - 2025-05-27
 ### Added
 - `useIsToday` hook now accepts an optional `timeZone` parameter for time zone-aware checks.
