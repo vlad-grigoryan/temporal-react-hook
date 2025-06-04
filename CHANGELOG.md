@@ -7,14 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.12] - 2025-06-04
+
+### Added
+- Dynamic formatting support in `useTemporalFormat` hook
+  - Format dates based on temporal distance (recent, today, this week, etc.)
+  - Configurable thresholds and format options for each time range
+  - Maintains backward compatibility with existing preset formats
+
+### Fixed
+- Fixed date conversion issues between Temporal and JavaScript Date objects
+- Improved handling of PlainDate objects in useTemporalFormat
+
+### Changed
+- Removed direct Temporal API usage from demo components
+- Updated documentation with dynamic formatting examples
+
 ## [1.6.11] - 2025-06-03
 ### Added
 - `useIsSame` hook now accepts an optional `timeZone` parameter for time zone-aware comparisons.
 - `DemoUseIsSame` component updated to include a time zone selector in the UI.
 - `DemoUseIsThisWeek` component updated for UI consistency (removed date buttons, added datetime-local input) and integrated time zone selector.
-
 ### Changed
 - Removed direct `@js-temporal/polyfill` imports from `DemoUseIsSame` and `DemoUseIsThisWeek` demo components for cleaner code.
+- `DemoUseTemporalFormat` component updated for UI consistency (layout classes, locale dropdown) and improved user experience.
 
 ## [1.6.9] - 2025-05-27
 ### Added
