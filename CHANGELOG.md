@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.13] - 2025-06-09
+
+### Added
+- Enhanced error handling in `useTemporalAdd` hook
+  - Comprehensive validation for date and duration inputs
+  - Clear error messages with examples and valid options
+  - Type checking for duration values
+
+### Changed
+- Updated `DemoUseTemporalAdd` component
+  - Added inputs for all duration units (years, months, days, hours, minutes, seconds)
+  - Improved documentation with examples of combining multiple duration units
+  - Enhanced UI layout and styling for better user experience
+
+
 ## [1.6.12] - 2025-06-04
 
 ### Added
