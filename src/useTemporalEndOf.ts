@@ -7,6 +7,7 @@ import { StartOfUnit } from "./useTemporalStartOf";
  * Returns a function to get the end of a given unit (second, minute, hour, day, week, month, year) for a Temporal.PlainDateTime.
  * Example: const endOf = useTemporalEndOf(); endOf(date, 'month')
  */
+
 export default function useTemporalEndOf() {
   return useCallback((date: Temporal.PlainDateTime, unit: StartOfUnit): Temporal.PlainDateTime => {
     switch (unit) {
@@ -26,6 +27,13 @@ export default function useTemporalEndOf() {
       case 'month': {
         const daysInMonth = date.daysInMonth || date.toPlainDate().daysInMonth;
         return date.with({ day: daysInMonth, hour: 23, minute: 59, second: 59, millisecond: 999 });
+      }
+      case 'quarter': {
+        const month = date.month;
+        const quarterEndMonth = Math.floor((month - 1) / 3) * 3 + 3;
+        const endDate = date.with({ month: quarterEndMonth });
+        const daysInMonth = endDate.daysInMonth;
+        return endDate.with({ day: daysInMonth, hour: 23, minute: 59, second: 59, millisecond: 999 });
       }
       case 'year':
         return date.with({ month: 12, day: 31, hour: 23, minute: 59, second: 59, millisecond: 999 });
