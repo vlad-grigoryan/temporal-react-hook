@@ -89,7 +89,7 @@ export default function DemoUseIsThisWeek() {
             <strong>Example:</strong>
             <code className="example-code">
               <pre style={{ margin: 0 }}>{`import { useIsThisWeek } from '@vladgrigoryan/temporal-react-hook';
-import { Temporal } from '@js-temporal/polyfill';
+import { useTemporalDateTime } from 'temporal-react-hook';
 
 const now = useTemporalDateTime();
 // Create a date/time to check
