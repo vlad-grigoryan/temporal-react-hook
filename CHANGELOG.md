@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2025-06-16
+
+### Added
+- `useDateTimeRange` hook and `DemoUseDateTimeRange` component::
+  - Manages a range of `Temporal.PlainDateTime` values with guaranteed `start <= end` ordering.
+  - Options to clamp the end date to the current time (`clampToNow`).
+  - Option to specify `smallestUnit` ('day', 'hour', 'minute', 'second') for `length` calculation and `toArray` enumeration.
+  - Provides `setStart`, `setEnd` setters.
+  - Includes `shiftBy(duration)` method to move the entire range.
+  - Exposes `length` (number of `smallestUnit`s in range, inclusive).
+  - Exposes `contains(dateTime)` method to check if a `Temporal.PlainDateTime` is within the range.
+  - Exposes `toArray()` method to enumerate all `Temporal.PlainDateTime` instances in the range by the `smallestUnit`.
+
 ## [1.6.15] - 2025-06-11
 
 ### Added

@@ -15,6 +15,7 @@ import DemoUseTemporalSubtract from "./components/DemoUseTemporalSubtract";
 import DemoUseTemporalStartEndOf from "./components/DemoUseTemporalStartEndOf";
 import DemoUseIsSame from "./components/DemoUseIsSame";
 import DemoUseCalendarTime from "./components/DemoUseCalendarTime";
+import DemoUseDateTimeRange from "./components/DemoUseDateTimeRange";
 import DemoUseTemporalDateTime from "./components/DemoUseTemporalDateTime";
 
 const demoSections = [
@@ -34,6 +35,7 @@ const demoSections = [
   { key: "add", label: "useTemporalAdd", component: <DemoUseTemporalAdd /> },
   { key: "subtract", label: "useTemporalSubtract", component: <DemoUseTemporalSubtract /> },
   { key: "startendof", label: "useTemporalStartOf / EndOf", component: <DemoUseTemporalStartEndOf /> },
+  { key: "daterange", label: "useDateTimeRange", component: <DemoUseDateTimeRange /> },
   { key: "calendartime", label: "useCalendarTime", component: <DemoUseCalendarTime /> },
 ];
 

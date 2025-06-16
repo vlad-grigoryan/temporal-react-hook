@@ -14,3 +14,4 @@ export { default as useTemporalFormat } from './useTemporalFormat';
 export { default as useTemporalStartOf } from './useTemporalStartOf';
 export { default as useTemporalEndOf } from './useTemporalEndOf';
 export { default as useIsSame } from './useIsSame';
+export { default as useDateTimeRange } from './useDateTimeRange';
