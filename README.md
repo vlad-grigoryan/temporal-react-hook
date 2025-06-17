@@ -2,7 +2,7 @@
 
 A modern React library that provides hooks for handling date and time operations using the Temporal API. This library makes it easy to work with dates, times, time zones, durations, and relative times in React applications.
 
-## 🖥️ [Live Demo](https://vlad-grigoryan.github.io/temporal-react-hook/)
+## [Live Demo](https://vlad-grigoryan.github.io/temporal-react-hook/)
 
 ## Installation
 
@@ -36,6 +36,8 @@ yarn add temporal-react-hook
 | `useTemporalFormat` | Format dates with custom patterns |
 | `useTemporalStartOf` | Get the start of a time unit (day, week, month, etc.) |
 | `useTemporalEndOf` | Get the end of a time unit (day, week, month, etc.) |
+| `useTimeZoneOffset` | Get the current UTC offset for a time zone, auto-updates on DST |
+| `useDateTimeRange` | Manage a date-time range with ordering, clamping, and helper functions |
 
 ## Running the Demo Locally
 

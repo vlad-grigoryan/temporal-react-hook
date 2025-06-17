@@ -1,6 +1,7 @@
 import { useState, FC, useRef, useEffect } from "react";
 import DemoUseCurrentDateTime from "./components/DemoUseCurrentDateTime";
 import DemoUseTimeZone from "./components/DemoUseTimeZone";
+import DemoUseTimeZoneOffset from "./components/DemoUseTimeZoneOffset";
 import DemoUseDuration from "./components/DemoUseDuration";
 import DemoUseRelativeTime from "./components/DemoUseRelativeTime";
 import DemoUseLocaleDateTime from "./components/DemoUseLocaleDateTime";
@@ -22,6 +23,7 @@ const demoSections = [
   { key: "temporaldatetime", label: "useTemporalDateTime", component: <DemoUseTemporalDateTime /> },
   { key: "currentdatetime", label: "useCurrentDateTime", component: <DemoUseCurrentDateTime /> },
   { key: "timezone", label: "useTimeZone", component: <DemoUseTimeZone /> },
+  { key: "timezoneoffset", label: "useTimeZoneOffset", component: <DemoUseTimeZoneOffset /> },
   { key: "duration", label: "useDuration", component: <DemoUseDuration /> },
   { key: "relativetime", label: "useRelativeTime", component: <DemoUseRelativeTime /> },
   { key: "localedatetime", label: "useLocaleDateTime", component: <DemoUseLocaleDateTime /> },
