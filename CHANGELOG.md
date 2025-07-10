@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2025-07-11
+
+### Added
+- `useIsBetween` hook to check if a date falls within a specified date range.
+- `DemoUseIsBetween` component to demonstrate the new hook's functionality with configurable options.
+
+### Changed
+- Refactored `useIsBetween` to accept a single options object (`{ date, startDate, endDate, inclusivity }`) for a cleaner and more readable API.
+
 ## [1.7.1] - 2025-06-17
 
 ### Added

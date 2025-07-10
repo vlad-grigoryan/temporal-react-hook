@@ -27,6 +27,7 @@ yarn add temporal-react-hook
 | `useLocaleDateTime` | Format dates according to locale-specific conventions |
 | `useTimeAgo` | Display how long ago a date occurred |
 | `useIsSame` | Compare if two dates are the same (day, month, year, etc.) |
+| `useIsBetween` | Check if a date falls within a specified date range (e.g., `useIsBetween({ date, startDate, endDate })`) |
 | `useIsToday` | Check if a date is today |
 | `useIsThisWeek` | Check if a date is in the current week |
 | `useIsThisMonth` | Check if a date is in the current month |
