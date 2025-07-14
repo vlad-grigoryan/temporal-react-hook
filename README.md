@@ -28,6 +28,7 @@ yarn add temporal-react-hook
 | `useTimeAgo` | Display how long ago a date occurred |
 | `useIsSame` | Compare if two dates are the same (day, month, year, etc.) |
 | `useIsBetween` | Check if a date falls within a specified date range (e.g., `useIsBetween({ date, startDate, endDate })`) |
+| `useDifference` | Calculate the numerical difference between two dates in a specified unit |
 | `useIsToday` | Check if a date is today |
 | `useIsThisWeek` | Check if a date is in the current week |
 | `useIsThisMonth` | Check if a date is in the current month |

@@ -19,6 +19,7 @@ import DemoUseIsBetween from "./components/DemoUseIsBetween";
 import DemoUseCalendarTime from "./components/DemoUseCalendarTime";
 import DemoUseDateTimeRange from "./components/DemoUseDateTimeRange";
 import DemoUseTemporalDateTime from "./components/DemoUseTemporalDateTime";
+import DemoUseDifference from "./components/DemoUseDifference";
 
 const demoSections = [
   { key: "temporaldatetime", label: "useTemporalDateTime", component: <DemoUseTemporalDateTime /> },
@@ -41,6 +42,7 @@ const demoSections = [
   { key: "startendof", label: "useTemporalStartOf / EndOf", component: <DemoUseTemporalStartEndOf /> },
   { key: "daterange", label: "useDateTimeRange", component: <DemoUseDateTimeRange /> },
   { key: "calendartime", label: "useCalendarTime", component: <DemoUseCalendarTime /> },
+  { key: "difference", label: "useDifference", component: <DemoUseDifference /> },
 ];
 
 const Playground: FC = () => {
