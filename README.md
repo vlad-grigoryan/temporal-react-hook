@@ -40,6 +40,7 @@ yarn add temporal-react-hook
 | `useTemporalEndOf` | Get the end of a time unit (day, week, month, etc.) |
 | `useTimeZoneOffset` | Get the current UTC offset for a time zone, auto-updates on DST |
 | `useDateTimeRange` | Manage a date-time range with ordering, clamping, and helper functions |
+| `useGetDaysInYear` | Get the number of days in the year for a given date (365 or 366 for leap years) |
 
 ## Running the Demo Locally
 

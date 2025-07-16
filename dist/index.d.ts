@@ -17,3 +17,4 @@ export { default as useIsSame } from './useIsSame';
 export { default as useIsBetween } from './useIsBetween';
 export { default as useDateTimeRange } from './useDateTimeRange';
 export { default as useTimeZoneOffset } from './useTimeZoneOffset';
+export { default as useDifference } from './useDifference';

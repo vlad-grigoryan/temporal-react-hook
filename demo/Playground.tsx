@@ -20,6 +20,7 @@ import DemoUseCalendarTime from "./components/DemoUseCalendarTime";
 import DemoUseDateTimeRange from "./components/DemoUseDateTimeRange";
 import DemoUseTemporalDateTime from "./components/DemoUseTemporalDateTime";
 import DemoUseDifference from "./components/DemoUseDifference";
+import { DemoUseGetDaysInYear } from './components/DemoUseGetDaysInYear';
 
 const demoSections = [
   { key: "temporaldatetime", label: "useTemporalDateTime", component: <DemoUseTemporalDateTime /> },
@@ -43,6 +44,7 @@ const demoSections = [
   { key: "daterange", label: "useDateTimeRange", component: <DemoUseDateTimeRange /> },
   { key: "calendartime", label: "useCalendarTime", component: <DemoUseCalendarTime /> },
   { key: "difference", label: "useDifference", component: <DemoUseDifference /> },
+  { key: "getdaysinyear", label: "useGetDaysInYear", component: <DemoUseGetDaysInYear /> },
 ];
 
 const Playground: FC = () => {
