@@ -41,6 +41,7 @@ yarn add temporal-react-hook
 | `useTimeZoneOffset` | Get the current UTC offset for a time zone, auto-updates on DST |
 | `useDateTimeRange` | Manage a date-time range with ordering, clamping, and helper functions |
 | `useGetDaysInYear` | Get the number of days in the year for a given date (365 or 366 for leap years) |
+| `useParseISO` | Parse an ISO-8601 date-time string into a `Temporal.PlainDateTime` instance |
 
 ## Running the Demo Locally
 

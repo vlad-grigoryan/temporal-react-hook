@@ -525,6 +525,26 @@ pre {
 }
 
 /* === Dart Docs-Inspired Playground Sidebar === */
+
+.playground-sidebar-search {
+  padding: 0.75rem 1.25rem 0.5rem 1.25rem;
+}
+
+.playground-sidebar-search input {
+  width: 80%;
+  height: 25px;
+  font-size: 16px;
+  border-radius: 1px;
+  border: 1px solid grey;
+  padding-left: 5px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.playground-sidebar-search input:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 1px rgba(25,118,210,0.4);
+}
 .playground-sidebar {
   background: #fff;
   color: #222;

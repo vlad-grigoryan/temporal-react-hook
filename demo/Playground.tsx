@@ -1,4 +1,4 @@
-import { useState, FC, useRef, useEffect } from "react";
+import React, { useState, FC, useRef, useEffect } from "react";
 import DemoUseCurrentDateTime from "./components/DemoUseCurrentDateTime";
 import DemoUseTimeZone from "./components/DemoUseTimeZone";
 import DemoUseTimeZoneOffset from "./components/DemoUseTimeZoneOffset";
@@ -21,6 +21,7 @@ import DemoUseDateTimeRange from "./components/DemoUseDateTimeRange";
 import DemoUseTemporalDateTime from "./components/DemoUseTemporalDateTime";
 import DemoUseDifference from "./components/DemoUseDifference";
 import { DemoUseGetDaysInYear } from './components/DemoUseGetDaysInYear';
+import DemoUseParseISO from "./components/DemoUseParseISO";
 
 const demoSections = [
   { key: "temporaldatetime", label: "useTemporalDateTime", component: <DemoUseTemporalDateTime /> },
@@ -45,9 +46,11 @@ const demoSections = [
   { key: "calendartime", label: "useCalendarTime", component: <DemoUseCalendarTime /> },
   { key: "difference", label: "useDifference", component: <DemoUseDifference /> },
   { key: "getdaysinyear", label: "useGetDaysInYear", component: <DemoUseGetDaysInYear /> },
+  { key: "parseiso", label: "useParseISO", component: <DemoUseParseISO /> },
 ];
 
 const Playground: FC = () => {
+  const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(demoSections[0].key);
   const [hovered, setHovered] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -99,6 +102,16 @@ const Playground: FC = () => {
           <span role="img" aria-label="clock" className="playground-sidebar-icon">⏰</span>
           Temporal React Hooks
         </div>
+        {/* Search box */}
+        <div className="playground-sidebar-search">
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search hooks..."
+            aria-label="Search hooks"
+          />
+        </div>
         <nav
           ref={navRef}
           className="playground-sidebar-nav"
@@ -108,7 +121,9 @@ const Playground: FC = () => {
               <div className="playground-nav-arrow playground-nav-arrow-up">▲</div>
             )}
             <div className="playground-nav-items">
-              {demoSections.map(section => (
+              {demoSections
+                .filter(section => section.label.toLowerCase().includes(search.toLowerCase()))
+                .map(section => (
                 <div
                   key={section.key}
                   onClick={() => handleSelectItem(section.key)}
